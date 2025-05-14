@@ -1,0 +1,21 @@
+<form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
+  <label for="companyName">Company Name:</label>
+  <input
+    type="text"
+    id="companyName"
+    name="companyName"
+    [(ngModel)]="companyName"
+    required
+  />
+
+  <label for="image">Company Image:</label>
+  <input
+    type="file"
+    id="image"
+    name="image"
+    (change)="onFileSelected($event)"
+    accept="image/*"
+  />
+
+  <button type="submit">Create Company</button>
+</form>
