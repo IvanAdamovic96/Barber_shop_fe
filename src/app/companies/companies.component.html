@@ -1,8 +1,7 @@
-
 <div *ngIf="companies.length === 0">
   <p>Učitavanje kompanija...</p>
 </div>
-
+<button routerLink="/create-company">Kreiraj svoju kompaniju!</button>
 <div *ngIf="companies.length > 0">
   <h2>Lista kompanija</h2>
   <ul>
@@ -10,12 +9,16 @@
       <a [routerLink]="['/companies', company.companyId]">
         {{ company.companyName }}
       </a>
-       {{ company.companyName }}<br />
-      
-      <img [src]="company.imageUrl" alt="{{ company.companyName }}" referrerpolicy="no-referrer" width="auto" height="auto" />
+      <!-- {{ company.companyName }}<br /> -->
+      <div *ngFor="let image of company.imageUrl">
+        <img [src]="image" alt="{{ company.companyName }}" referrerpolicy="no-referrer" width="150px" height="auto" />
+      </div>
+
+      <!-- <img [src]="company.imageUrl" alt="{{ company.companyName }}" referrerpolicy="no-referrer" width="150px"
+        height="auto" /> -->
     </li>
   </ul>
-  <div class = "stagod" >
-  <button routerLink="/create-company">Kreiraj svoju kompaniju!</button>
-</div>
+  <div class="stagod">
+
+  </div>
 </div>

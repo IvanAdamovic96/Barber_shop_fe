@@ -5,21 +5,21 @@ import { BarberService } from '../services/barber.service';
 
 @Component({
   selector: 'app-create-company',
- imports: [FormsModule],
+  imports: [FormsModule],
   templateUrl: './create-company.component.html',
   styleUrl: './create-company.component.css'
 })
 export class CreateCompanyComponent implements OnInit {
-companyName: string = '';
-  selectedFile: File | null = null;
+  companyName: string = '';
+  selectedFile: File[] | null = null;
 
-  constructor(private barberService: BarberService) {}
+  constructor(private barberService: BarberService) { }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    //throw new Error('Method not implemented.');
   }
 
   onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0];
+    this.selectedFile = Array.from(event.target.files);
   }
 
   onSubmit(): void {
@@ -30,9 +30,12 @@ companyName: string = '';
 
     const formData = new FormData();
     formData.append('CompanyName', this.companyName);
-    formData.append('Image', this.selectedFile);
+    //formData.append('Image', this.selectedFile);
+    for (let i = 0; i < this.selectedFile.length; i++) {
+      formData.append('Image', this.selectedFile[i]); // "Images" je ime polja koje backend očekuje
+    }
 
-    this.barberService.createCompany(this.companyName,this.selectedFile).subscribe({
+    this.barberService.createCompany(formData).subscribe({
       next: (response) => {
         console.log('Company created:', response);
         alert('Company successfully created!');
