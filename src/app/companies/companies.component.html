@@ -1,24 +1,94 @@
-<div *ngIf="companies.length === 0">
-  <p>Učitavanje kompanija...</p>
+<div class="container-fluid">
+
+  <div *ngIf="companies.length === 0">
+    <p>Učitavanje kompanija...</p>
+  </div>
+  <button class="btn btn-outline-primary" routerLink="/create-company">Kreiraj svoju kompaniju!</button>
+
+  <div class="container mt-4" *ngIf="companies.length > 0">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-4 mb-4" *ngFor="let company of companies">
+        <div class="card h-100">
+          <!-- Carousel unutar kartice -->
+          <div [id]="'carouselCompany' + company.companyId" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item" *ngFor="let image of company.imageUrl; let i = index"
+                [ngClass]="{ 'active': i === 0 }">
+                <img [src]="image" class="d-block w-100" alt="{{ company.companyName }} slika {{ i + 1 }}"
+                  referrerpolicy="no-referrer" />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button"
+              [attr.data-bs-target]="'#carouselCompany' + company.companyId" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button"
+              [attr.data-bs-target]="'#carouselCompany' + company.companyId" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+
+          <div class="card-body">
+            <h5 class="card-title">{{ company.companyName }}</h5>
+            <a [routerLink]="['/companies', company.companyId]" class="btn btn-primary">Detalji</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<button routerLink="/create-company">Kreiraj svoju kompaniju!</button>
-<div *ngIf="companies.length > 0">
+
+
+
+
+
+
+<!-- <div *ngIf="companies.length > 0">
   <h2>Lista kompanija</h2>
   <ul>
     <li *ngFor="let company of companies">
       <a [routerLink]="['/companies', company.companyId]">
         {{ company.companyName }}
       </a>
-      <!-- {{ company.companyName }}<br /> -->
-      <div *ngFor="let image of company.imageUrl">
-        <img [src]="image" alt="{{ company.companyName }}" referrerpolicy="no-referrer" width="150px" height="auto" />
-      </div>
 
-      <!-- <img [src]="company.imageUrl" alt="{{ company.companyName }}" referrerpolicy="no-referrer" width="150px"
-        height="auto" /> -->
+      <div class="stagod">
+        <div [id]="'carouselCompany' + company.companyId" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item" *ngFor="let image of company.imageUrl; let i = index"
+              [ngClass]="{ 'active': i === 0 }">
+              <img [src]="image" class="d-block w-100" height="auto" alt="{{ company.companyName }} slika {{ i + 1 }}"
+                referrerpolicy="no-referrer" />
+            </div>
+          </div>
+
+          <button class="carousel-control-prev" type="button"
+            [attr.data-bs-target]="'#carouselCompany' + company.companyId" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button"
+            [attr.data-bs-target]="'#carouselCompany' + company.companyId" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
     </li>
   </ul>
-  <div class="stagod">
+</div> -->
 
-  </div>
-</div>
+
+
+
+
+
+
+
+
+
+<!-- {{ company.companyName }}<br /> -->
+<!-- <div *ngFor="let image of company.imageUrl">
+        <img [src]="image" alt="{{ company.companyName }}" referrerpolicy="no-referrer" width="150px" height="auto" />
+      </div> -->
