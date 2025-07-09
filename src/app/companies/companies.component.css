@@ -1,5 +1,109 @@
-.stagod{
-margin-top: 20px;
-width: 400px;
-height: 250px;
+/*:host {
+  display: block;
+  background-image: url('https://www.wineenthusiast.com/wp-content/uploads/2022/09/HERO_Barbershop_Cuts_and_Cocktails_Credit_David_J_Crewe_1920x1280-1280x853.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding-top: 20px;
+}
+*/
+/* Glavna pozadina sa staklastim efektom */
+.container-fluid {
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 16px;
+  padding: 30px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Dugme za kreiranje kompanije */
+.custom-button {
+  background-color: rgba(210, 180, 140, 0.85);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-button:hover {
+  background-color: rgba(210, 180, 140, 1);
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Stil kartice za kompaniju */
+.company-card {
+  background-color: rgba(245, 222, 179, 0.88);
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  position: relative;
+}
+
+/* Hover efekat na karticu */
+.company-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Naslov kompanije */
+.company-card h5 {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 18px;
+  color: #3b2f2f;
+  margin-bottom: 10px;
+}
+
+/* Dugme za detalje */
+.company-card a.btn-primary {
+  background-color: #6d4c41;
+  border: none;
+  color: white;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.company-card a.btn-primary:hover {
+  background-color: #5d4037;
+  transform: scale(1.03);
+}
+
+/* Carousel strelice */
+button.btn-light {
+  opacity: 0.85;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: none;
+}
+
+/* Poruka ako nema slike */
+.no-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: 1px dashed #aaa;
+  height: 200px;
+  color: #777;
+  font-style: italic;
+  border-radius: 8px;
+  margin-bottom: 12px;
 }

@@ -1,7 +1,103 @@
-<h2>Frizeri u kompaniji</h2>
-<ul>
-  <li *ngFor="let barber of barbers">
-    <strong>Frizer:</strong> {{ barber.barberName }}<br />
-    <strong>Kompanija:</strong> {{ barber.companyName }}
-  </li>
-</ul>
+<div class="container-fluid mt-5">
+
+  <div *ngIf="company?.imageUrl?.length > 0" class="container mb-4">
+    <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div *ngFor="let image of company.imageUrl; let i = index" class="carousel-item"
+          [ngClass]="{ active: i === 0 }">
+          <img [src]="image" class="d-block w-100 rounded" style="max-height: 400px; object-fit: cover;"
+            [alt]="'Slika ' + i" />
+        </div>
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#companyCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#companyCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+
+
+  <div *ngIf="isLoggedIn && isAdmin">
+    <h4>Kreiraj Vlasnika Berbernice</h4>
+       <app-create-company-owner [companyId]="companyId">
+    </app-create-company-owner>
+
+  </div>
+  <h2>Frizeri u kompaniji</h2>
+  <a *ngIf="isLoggedIn && isAdmin" class="btn btn-info mt-3" href="#" [routerLink]="['/create-barber', companyId]">
+    Dodaj frizera
+  </a>
+  <ul>
+    <li *ngFor="let barber of barbers">
+      <strong>Frizer : </strong>
+      <a class="btn btn-outline-primary" (click)="onBarberClick(barber.barberId)">
+        {{ barber.barberName }}
+      </a>
+      <br />
+      <strong>Kompanija:</strong> {{ barber.companyName }}
+    </li>
+  </ul>
+
+  <div *ngIf="selectedBarberId" class="mt-3">
+    <h5>Slobodni termini za {{ selectedDate }}</h5>
+
+    <input type="date" [min]="today" [(ngModel)]="selectedDate" (change)="onDateChange()"
+      class="form-control w-25 mb-3" />
+
+
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+      <div class="col" *ngFor="let appointment of freeAppointments">
+        <div class="card h-100 text-center"
+          [ngClass]="{ 'bg-primary text-white': selectedAppointment === appointment.dateAndTime }">
+          <div class="card-body">
+            <h6 class="card-title">
+              {{ appointment.dateAndTime | date:'dd.MM.yyyy. HH:mm' : 'UTC' }}
+            </h6>
+            <button class="btn btn-light mt-2" (click)="onDatePick(appointment.dateAndTime)">
+              {{ selectedAppointment === appointment.dateAndTime ? 'Izabran termin' : 'Izaberi termin' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="mt-5 pb-5">
+      <form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
+        <div class="row gy-4">
+          <div class="col-md-6">
+            <input class="form-control" type="text" name="firstName" placeholder="First Name" [(ngModel)]="firstName">
+          </div>
+          <div class="col-md-6 ">
+            <input class="form-control" type="text" name="lastName" placeholder="Last Name" [(ngModel)]="lastName">
+          </div>
+          <div class="col-md-12">
+            <input class="form-control" type="text" name="email" placeholder=" Email Address" [(ngModel)]="email">
+          </div>
+          <div class="col-md-12">
+            <input class="form-control" type="text" name="phoneNumber" placeholder="Phone Number"
+              [(ngModel)]="phoneNumber">
+          </div>
+          <div class="col-md-12 text-center">
+            <input class="form-control" type="text" name="haircut" placeholder="Your haircut" [(ngModel)]="haircut">
+          </div>
+          <div class="col-md-12 text-center">
+            <button class="form-control" type="submit">Zakazi!</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
+
+
+
+    <ng-template #noAppointments>
+      <p>Nema slobodnih termina za izabrani datum.</p>
+    </ng-template>
+  </div>
+</div>

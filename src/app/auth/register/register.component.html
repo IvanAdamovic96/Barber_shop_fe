@@ -1,0 +1,10 @@
+<form (ngSubmit)="onSubmit()">
+  <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="Ime" required />
+  <input type="text" name="lastName" [(ngModel)]="lastName" placeholder="Prezime" required />
+  <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
+  <input type="text" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="Telefon" required />
+  <input type="password" name="password" [(ngModel)]="password" placeholder="Lozinka" required />
+  <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Potvrdi lozinku" required />
+
+  <button type="submit">Registruj se</button>
+</form>

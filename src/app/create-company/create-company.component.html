@@ -1,22 +1,40 @@
 <form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
   <label for="companyName">Company Name:</label>
-  <input
-    type="text"
-    id="companyName"
-    name="companyName"
-    [(ngModel)]="companyName"
-    required
-  />
+  <input type="text" id="companyName" name="companyName" [(ngModel)]="companyName" required />
 
   <label for="image">Company Image:</label>
-  <input
-    type="file"
-    id="image"
-    name="image"
-    multiple
-    (change)="onFileSelected($event)"
-    accept="image/*"
-  />
+  <!--<input type="file" id="image" name="image" multiple (change)="onFileSelected($event)" accept="image/*" />-->
 
   <button type="submit">Create Company</button>
+
+
+  <div class="drag-drop-area">
+
+    <i class="fas fa-folder-open icon-folder"></i>
+    <p class="drag-drop-text"><label for="image" class="browse-link">Browse</label></p>
+    <input type="file" id="image" name="image" multiple accept="image/" (change)="onFileSelected($event)"
+      style="display: none;">
+    <div *ngIf="uploadedFiles.length===0 "
+      class="text-danger validation-message mt-2">
+      Please attach/upload at least one image.
+    </div>
+
+  </div>
+  <div>
+    <div class="uploaded-files-container">
+                            <div class="uploaded-file-item" *ngFor="let file of uploadedFiles; let i = index">
+                                <div class="file-info">
+                                    <img *ngIf="file.url" [src]="file.url" alt="Image preview"
+                                        class="file-preview-thumbnail">
+                                    <div class="file-details">
+                                        <span class="file-name">{{ file.name }}</span>
+                                        <span class="file-size">{{ file.size }}</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-remove-file" (click)="removeFile(i)">
+                                    <i class="fas fa-times"></i>X </button>
+                            </div>
+                        </div>
+  </div>
+
 </form>

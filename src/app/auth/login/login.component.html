@@ -1,0 +1,9 @@
+<form (ngSubmit)="onSubmit()" #loginForm="ngForm" enctype="multipart/form-data">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" [(ngModel)]="email" required/>
+
+    <label for="password">Password:</label>
+    <input type="text" id="password" name="password" [(ngModel)]="password" required/>
+
+    <button type="submit">Login</button>
+</form>
