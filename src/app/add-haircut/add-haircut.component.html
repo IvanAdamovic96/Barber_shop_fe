@@ -1,0 +1,29 @@
+<div class="barber-form-bg d-flex justify-content-center align-items-center">
+    <!-- Poluprovidna kutija sa formom -->
+    <div class="col-md-6 bg-white bg-opacity-75 p-5 rounded-4 shadow-lg">
+        <h3 class="mb-4 text-center text-primary">Dodaj tip usluge</h3>
+
+        <form #haircutForm="ngForm" (ngSubmit)="onSubmit()">
+            <label for="haircutType">Tip usluge</label>
+            <div class=" mb-3">
+                <input id="haircutType" name="haircutType" type="text" required class="form-control"
+                    placeholder="Unesite tip usluge" [(ngModel)]="haircutType" />
+            </div>
+            <label for="price">Cena</label>
+            <div class="input-group mb-3">
+                <input id="price" name="price" type="number" required class="form-control" 
+                placeholder="Unesite cenu usluge" [(ngModel)]="price" />
+                <span class="input-group-text">RSD</span>
+            </div>
+            <label for="duration">Vreme trajanja usluge</label>
+            <div class="input-group mb-3">
+                <input id="duration" name="duration" type="number" required class="form-control"
+                    [(ngModel)]="duration" />
+                <span class="input-group-text">min</span>
+            </div>
+            <div class="text-center">
+                <button type="submit" class=" btn btn-success px-5">Sačuvaj tip usluge</button>
+            </div>
+        </form>
+    </div>
+</div>

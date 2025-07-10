@@ -1,10 +1,34 @@
-<form (ngSubmit)="onSubmit()">
-  <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="Ime" required />
-  <input type="text" name="lastName" [(ngModel)]="lastName" placeholder="Prezime" required />
-  <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
-  <input type="text" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="Telefon" required />
-  <input type="password" name="password" [(ngModel)]="password" placeholder="Lozinka" required />
-  <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Potvrdi lozinku" required />
+<form (ngSubmit)="onSubmit()" #form="ngForm" class="form-container">
+  <div class="form-group">
+    <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="Ime" required #firstNameModel="ngModel" />
+    <div class="error" *ngIf="firstNameModel.invalid && firstNameModel.touched">Ime je obavezno.</div>
+  </div>
 
-  <button type="submit">Kreiraj Vlasnika</button>
+  <div class="form-group">
+    <input type="text" name="lastName" [(ngModel)]="lastName" placeholder="Prezime" required #lastNameModel="ngModel" />
+    <div class="error" *ngIf="lastNameModel.invalid && lastNameModel.touched">Prezime je obavezno.</div>
+  </div>
+
+  <div class="form-group">
+    <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required email #emailModel="ngModel" />
+    <div class="error" *ngIf="emailModel.invalid && emailModel.touched">Validan email je obavezan.</div>
+  </div>
+
+  <div class="form-group">
+    <input type="text" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="Telefon" required #phoneModel="ngModel" />
+    <div class="error" *ngIf="phoneModel.invalid && phoneModel.touched">Telefon je obavezan.</div>
+  </div>
+
+  <div class="form-group">
+    <input type="password" name="password" [(ngModel)]="password" placeholder="Lozinka" required minlength="6" #passModel="ngModel" />
+    <div class="error" *ngIf="passModel.invalid && passModel.touched">Lozinka mora imati najmanje 6 karaktera.</div>
+  </div>
+
+  <div class="form-group">
+    <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Potvrdi lozinku" required #confirmModel="ngModel" />
+    <div class="error" *ngIf="confirmModel.invalid && confirmModel.touched">Potvrda lozinke je obavezna.</div>
+    <div class="error" *ngIf="password !== confirmPassword && confirmModel.touched">Lozinke se ne poklapaju.</div>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid || password !== confirmPassword">Kreiraj Vlasnika</button>
 </form>

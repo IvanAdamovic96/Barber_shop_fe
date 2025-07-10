@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { BarberService } from '../services/barber.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-create-barber',
@@ -12,14 +13,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class CreateBarberComponent {
   companyId: string | null = null;
+  check: boolean = false;
 
-  constructor(private barberService: BarberService, private route: ActivatedRoute) { }
+  constructor(private barberService: BarberService, private authService: AuthService, private route: ActivatedRoute) { }
 
 
+  
 
   onSubmit(form: NgForm) {
-     this.companyId = this.route.snapshot.paramMap.get('companyId');
-     console.log(this.companyId)
+    this.companyId = this.route.snapshot.paramMap.get('companyId');
+    console.log(this.companyId)
 
     if (form.value) {
 

@@ -13,18 +13,21 @@ import { AuthService } from '../services/auth.service';
 export class CompaniesComponent implements OnInit {
 
   companies: any[] = [];
+  filteredCompaniesByOwnerId: any[] = [];
   isLoggedIn = false;
   isAdmin = false;
+  isOwner = false;
 
-  constructor(private barberService: BarberService,private authService : AuthService) { }
+  constructor(private barberService: BarberService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.authService.isLoggedin$.subscribe(status=>{
+    this.authService.isLoggedin$.subscribe(status => {
       this.isLoggedIn = status
 
     })
-    this.isAdmin=this.authService.isAdmin();
-    
+    this.isAdmin = this.authService.isAdmin();
+    this.isOwner = this.authService.isOwner();
+
     this.barberService.getAllCompanies().subscribe({
       next: (data) => {
         this.companies = data.map(company => ({
@@ -34,6 +37,14 @@ export class CompaniesComponent implements OnInit {
           currentImageIndex: 0
         }));
 
+        if (this.authService.isOwner()) {
+          const id = this.checkOwner();
+          console.log('Owner company ID:', id);
+
+          this.filteredCompaniesByOwnerId = this.companies.filter(company => company.companyId === id);
+          console.log('Filtered companies for owner:', this.filteredCompaniesByOwnerId);
+        }
+
 
         console.log(this.companies);
       },
@@ -41,22 +52,31 @@ export class CompaniesComponent implements OnInit {
         console.error('Greška prilikom dohvatanja kompanija', err);
       }
     });
+
+
+
+
   }
+
+
+  checkOwner(): string {
+    if (this.authService.isOwner()) {
+      const ownerCompanyId = this.authService.getOwnerCompanyId();
+      return ownerCompanyId ? ownerCompanyId : '';
+    }
+    return '';
+  }
+
+
   nextImage(company: any) {
     if (company.imageUrl.length === 0) return;
     company.currentImageIndex = (company.currentImageIndex + 1) % company.imageUrl.length;
   }
+
 
   prevImage(company: any) {
     if (company.imageUrl.length === 0) return;
     company.currentImageIndex = (company.currentImageIndex - 1 + company.imageUrl.length) % company.imageUrl.length;
   }
 
-  /* getImageSrc(driveLink: string): string {
-    if (!driveLink) return ''; // Ako je null ili undefined, vrati prazan string
-
-    const match = driveLink.match(/\/d\/(.+?)\//);
-    const id = match ? match[1] : '';
-    return id ? `https://drive.google.com/uc?export=view&id=${id}` : '';
-  } */
 }

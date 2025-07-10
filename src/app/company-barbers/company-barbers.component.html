@@ -1,6 +1,6 @@
-<div class="container-fluid mt-5">
+<div *ngIf="company?.imageUrl?.length > 0" class="container-fluid mt-5">
 
-  <div *ngIf="company?.imageUrl?.length > 0" class="container mb-4">
+  <div class="container mb-4">
     <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div *ngFor="let image of company.imageUrl; let i = index" class="carousel-item"
@@ -19,16 +19,23 @@
     </div>
   </div>
 
+  <h2>{{company.companyName}}</h2>
 
-  <div *ngIf="isLoggedIn && isAdmin">
+  <div *ngIf="isLoggedIn && isAdmin && check===false">
     <h4>Kreiraj Vlasnika Berbernice</h4>
-       <app-create-company-owner [companyId]="companyId">
+    <app-create-company-owner [companyId]="companyId">
     </app-create-company-owner>
 
   </div>
+
   <h2>Frizeri u kompaniji</h2>
-  <a *ngIf="isLoggedIn && isAdmin" class="btn btn-info mt-3" href="#" [routerLink]="['/create-barber', companyId]">
+  <a *ngIf="isLoggedIn && (isAdmin || isOwner)" class="btn btn-info mt-3 me-1"
+    [routerLink]="['/create-barber', companyId]">
     Dodaj frizera
+  </a>
+  <a *ngIf="isLoggedIn && (isAdmin || isOwner)" class="btn btn-success mt-3"
+    [routerLink]="['/create-haircut', companyId]">
+    Dodaj usluge
   </a>
   <ul>
     <li *ngFor="let barber of barbers">
@@ -62,9 +69,8 @@
           </div>
         </div>
       </div>
-
-
     </div>
+
     <div class="mt-5 pb-5">
       <form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
         <div class="row gy-4">
@@ -81,8 +87,20 @@
             <input class="form-control" type="text" name="phoneNumber" placeholder="Phone Number"
               [(ngModel)]="phoneNumber">
           </div>
-          <div class="col-md-12 text-center">
-            <input class="form-control" type="text" name="haircut" placeholder="Your haircut" [(ngModel)]="haircut">
+          <div class="packages-container">
+            <h5>PAKETI USLUGA</h5>
+            <form>
+              <label *ngFor="let haircut of haircuts" class="package-item">
+                <input type="radio" name="selectedHaircut" [value]="haircut.haircutId"
+                  [checked]="selectedHaircut === haircut.haircutId" (change)="onHaircutChange(haircut.haircutId)" />
+
+                <div class="package-content">
+                  <div class="type">{{ haircut.haircutType }}</div>
+                  <div class="duration">{{ haircut.duration }} min</div>
+                  <div class="price">{{ haircut.price | number }} RSD</div>
+                </div>
+              </label>
+            </form>
           </div>
           <div class="col-md-12 text-center">
             <button class="form-control" type="submit">Zakazi!</button>

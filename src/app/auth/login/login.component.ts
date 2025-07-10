@@ -29,6 +29,9 @@ export class LoginComponent {
     this.authService.login(formData).subscribe({
       next: (response) => {
         this.router.navigate(['/home'])
+
+        this.authService.setOwnerCompanyId(response.companyId);
+
         console.log('Login successful:', response);
         
       },

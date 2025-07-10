@@ -32,6 +32,13 @@ export class BarberService {
     return this.http.get<any>(`${this.companyUrl}/getCompanyDetailsById?CompanyId=${id}`);
   }
 
+  createHaircut(formData: FormData):Observable<any>{
+    return this.http.post<any>(`${this.companyUrl}/create-haircut`, formData);
+  }
+
+  getAllHaircutsByCompanyId(id:string):Observable<any>{
+    return this.http.get<any>(`${this.companyUrl}/get-all-haircuts-by-companyid?CompanyId=${id}`);
+  }
   
   createBarber(formData: any): Observable<any> {
     return this.http.post<any>(`${this.barberUrl}/create`, formData)

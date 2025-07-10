@@ -7,67 +7,32 @@
     <form #barberForm="ngForm" (ngSubmit)="onSubmit(barberForm)">
       <label for="barberName">Ime frizera</label>
       <div class=" mb-3">
-        
-        <input
-          id="barberName"
-          name="barberName"
-          type="text"
-          required
-          class="form-control"
-          placeholder="Unesite ime frizera"
-          ngModel
-        />
-        
+
+        <input id="barberName" name="barberName" type="text" required class="form-control"
+          placeholder="Unesite ime frizera" ngModel />
+
       </div>
- <label for="phoneNumber">Broj telefona</label>
-       <div class=" mb-3">
-        <input
-          id="phoneNumber"
-          name="phoneNumber"
-          type="text"
-          required
-          class="form-control"
-          placeholder="primer : +381 6(1-9) 123456"
-          ngModel
-        />
-       
-      </div>
-    <label for="email">Email</label>
+      <label for="phoneNumber">Broj telefona</label>
       <div class=" mb-3">
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          class="form-control"
-          placeholder="primer: barber@gmail.com"
-          ngModel
-        />
-       
+        <input id="phoneNumber" name="phoneNumber" type="text" required class="form-control"
+          placeholder="primer : +381 6(1-9) 123456" ngModel />
+
+      </div>
+      <label for="email">Email</label>
+      <div class=" mb-3">
+        <input id="email" name="email" type="email" required class="form-control" placeholder="primer: barber@gmail.com"
+          ngModel />
+
       </div>
 
       <div class="mb-3">
         <label for="individualStartTime" class="form-label">Početak rada:</label>
-        <input
-          id="individualStartTime"
-          name="individualStartTime"
-          type="time"
-          required
-          class="form-control"
-          ngModel
-        />
+        <input id="individualStartTime" name="individualStartTime" type="time" required class="form-control" ngModel />
       </div>
 
       <div class="mb-4">
         <label for="individualEndTime" class="form-label">Kraj rada:</label>
-        <input
-          id="individualEndTime"
-          name="individualEndTime"
-          type="time"
-          required
-          class="form-control"
-          ngModel
-        />
+        <input id="individualEndTime" name="individualEndTime" type="time" required class="form-control" ngModel />
       </div>
 
       <div class="text-center">

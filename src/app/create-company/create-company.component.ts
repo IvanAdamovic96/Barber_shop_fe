@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { BarberService } from '../services/barber.service';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 interface DisplayFile {
     file: File;
     name: string;
@@ -11,7 +11,7 @@ interface DisplayFile {
 }
 @Component({
   selector: 'app-create-company',
- imports: [FormsModule,NgIf,NgFor],
+ imports: [FormsModule, CommonModule],
   templateUrl: './create-company.component.html',
   styleUrl: './create-company.component.css'
  

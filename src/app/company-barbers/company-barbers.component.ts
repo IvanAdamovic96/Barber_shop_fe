@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BarberService } from '../services/barber.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -10,23 +10,23 @@ import { Subscription } from 'rxjs/internal/Subscription';
 @Component({
   selector: 'app-company-barbers',
   imports: [CommonModule, RouterLink, FormsModule, CreateCompanyOwnerComponent],
-  templateUrl: './company-barbers.component.html'
-
+  templateUrl: './company-barbers.component.html',
+  styleUrl: './company-barbers.component.css'
 })
 
 export class CompanyBarbersComponent implements OnInit {
 
-
-
+  check: boolean = false;
   selectedAppointment: string | null = null;
   companyId: string | null = null;
   barbers: any[] = [];
+  haircuts: any[] = [];
   selectedBarberId: string | null = null;
   selectedDate: Date = new Date();
   today: string = "";
   datepicker: Date = new Date();
   company: any;
-
+  selectedHaircut: string = '';
 
   //(YYYY-MM-DD)
   freeAppointments: any[] = [];
@@ -37,6 +37,7 @@ export class CompanyBarbersComponent implements OnInit {
   haircut: string = "";
   isLoggedIn = false;
   isAdmin = false;
+  isOwner = false;
   routeSubscription: Subscription | undefined;
   currentEntityId: string | null = null;
 
@@ -44,7 +45,7 @@ export class CompanyBarbersComponent implements OnInit {
 
   ngOnInit(): void {
     this.routeSubscription = this.route.paramMap.subscribe(params => {
-      this.currentEntityId = params.get('companyId'); // 'id' mora da se poklapa sa onim u ruting konfiguraciji
+      this.currentEntityId = params.get('id'); // 'id' mora da se poklapa sa onim u ruting konfiguraciji
       if (this.currentEntityId) {
         console.log('ID dohvaćen u roditelj komponenti:', this.currentEntityId);
       } else {
@@ -52,21 +53,38 @@ export class CompanyBarbersComponent implements OnInit {
       }
     });
 
+    this.companyId = this.route.snapshot.paramMap.get('id');
+
+    if (this.companyId) {
+      this.authService.checkIfCompanyOwnerExists(this.companyId).subscribe({
+        next: (res) => {
+          this.check = res
+          console.log("company onwer exist: " + this.check)
+        },
+        error: (err) => {
+          // greška
+        }
+      });
+    } else {
+      console.error("Nedostaje companyId u URL-u");
+    }
 
 
     this.authService.isLoggedin$.subscribe(status => {
       this.isLoggedIn = status
     })
 
-    
+
+
     this.isAdmin = this.authService.isAdmin();
+
+    this.isOwner = this.authService.isOwner();
 
     const now = new Date();
 
     this.today = now.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
 
 
-    this.companyId = this.route.snapshot.paramMap.get('id');
 
 
 
@@ -90,12 +108,28 @@ export class CompanyBarbersComponent implements OnInit {
           console.error(err);
         }
       });
+
+      this.barberService.getAllHaircutsByCompanyId(this.companyId).subscribe({
+        next: (data) => {
+          this.haircuts = data;
+          if (this.haircuts.length > 0) {
+            this.selectedHaircut = this.haircuts[0].haircutId;
+          }
+          console.log(this.haircuts)
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
     }
 
   }
 
 
-
+  onHaircutChange(haircutId: string) {
+    this.selectedHaircut = haircutId;
+    console.log("Izabran:", this.selectedHaircut);
+  }
 
 
 
@@ -149,7 +183,7 @@ export class CompanyBarbersComponent implements OnInit {
     formData.append('Schedule.lastName', this.lastName);
     formData.append('Schedule.email', this.email);
     formData.append('Schedule.phoneNumber', this.phoneNumber);
-    formData.append('Schedule.haircut', this.haircut);
+    formData.append('Schedule.haircutId', this.selectedHaircut);
     formData.append('Schedule.time', this.selectedAppointment!);
 
     if (this.selectedBarberId) {
