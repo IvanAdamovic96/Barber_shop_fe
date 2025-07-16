@@ -1,4 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+/* body {
+    
+} */
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.toast-fixed-top-right {
+    position: fixed !important;
+    top: 20px !important;
+    right: 25px !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+}

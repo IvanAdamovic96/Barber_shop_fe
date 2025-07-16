@@ -1,4 +1,4 @@
-<div *ngIf="company?.imageUrl?.length > 0" class="container-fluid mt-5">
+<div *ngIf="company?.imageUrl?.length > 0" class="container-fluid pt-5 pb-5">
 
   <div class="container mb-4">
     <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -22,7 +22,7 @@
   <h2>{{company.companyName}}</h2>
 
   <div *ngIf="isLoggedIn && isAdmin && check===false">
-    <h4>Kreiraj Vlasnika Berbernice</h4>
+    <h4>Kreiraj vlasnika berbernice</h4>
     <app-create-company-owner [companyId]="companyId">
     </app-create-company-owner>
 
@@ -55,13 +55,14 @@
       class="form-control w-25 mb-3" />
 
 
-    <div class="row row-cols-1 row-cols-md-3 g-3">
+    <div class="row row-cols-1 row-cols-md-6 g-3">
       <div class="col" *ngFor="let appointment of freeAppointments">
         <div class="card h-100 text-center"
           [ngClass]="{ 'bg-primary text-white': selectedAppointment === appointment.dateAndTime }">
           <div class="card-body">
             <h6 class="card-title">
-              {{ appointment.dateAndTime | date:'dd.MM.yyyy. HH:mm' : 'UTC' }}
+              <!-- {{ appointment.dateAndTime | date:'dd.MM.yyyy. HH:mm' : 'UTC' }} -->
+              {{ appointment.dateAndTime | date:'HH:mm' : 'UTC' }}
             </h6>
             <button class="btn btn-light mt-2" (click)="onDatePick(appointment.dateAndTime)">
               {{ selectedAppointment === appointment.dateAndTime ? 'Izabran termin' : 'Izaberi termin' }}
@@ -88,7 +89,7 @@
               [(ngModel)]="phoneNumber">
           </div>
           <div class="packages-container">
-            <h5>PAKETI USLUGA</h5>
+            <h5>USLUGE</h5>
             <form>
               <label *ngFor="let haircut of haircuts" class="package-item">
                 <input type="radio" name="selectedHaircut" [value]="haircut.haircutId"

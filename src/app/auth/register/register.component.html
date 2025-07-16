@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()">
+<!-- <form (ngSubmit)="onSubmit()">
   <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="Ime" required />
   <input type="text" name="lastName" [(ngModel)]="lastName" placeholder="Prezime" required />
   <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
@@ -7,4 +7,55 @@
   <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Potvrdi lozinku" required />
 
   <button type="submit">Registruj se</button>
-</form>
+</form> -->
+
+
+<div class="barber-form-bg d-flex justify-content-center align-items-center min-vh-100">
+  <div class="col-md-4 bg-white bg-opacity-75 p-5 rounded-4 shadow-lg">
+    <h3 class="mb-4 text-center text-primary">Registracija</h3>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <label for="firstName">Ime:</label>
+      <div class="mb-3">
+        <input type="text" id="firstName" name="firstName" name="firstName" class="form-control" [(ngModel)]="firstName"
+          placeholder="Unesite svoje ime" required />
+      </div>
+
+      <label for="lastName">Prezime:</label>
+      <div class="mb-3">
+        <input type="text" id="lastName" name="lastName" class="form-control" name="lastName" [(ngModel)]="lastName"
+          placeholder="Unesite svoje prezime" required />
+      </div>
+
+      <label for="email">Email:</label>
+      <div class="mb-3">
+        <input type="text" id="email" name="email" class="form-control" placeholder="example@gmail.com"
+          [(ngModel)]="email" required />
+      </div>
+
+      <label for="phoneNumber">Telefon:</label>
+      <div class="mb-3">
+        <input type="text" id="phoneNumber" class="form-control" name="phoneNumber" [(ngModel)]="phoneNumber"
+          placeholder="+381 61 123456" required />
+      </div>
+
+      <label for="password">Lozinka:</label>
+      <div class="mb-3">
+        <input type="password" id="password" name="password" class="form-control" [(ngModel)]="password"
+          placeholder="Unesite lozinku" required />
+      </div>
+
+      <label for="confirmPassword">Password:</label>
+      <div class="mb-3">
+        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+          [(ngModel)]="confirmPassword" placeholder="Potvrdi lozinku" required />
+      </div>
+
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success px-5">Registruj se</button>
+      </div>
+    </form>
+  </div>
+</div>

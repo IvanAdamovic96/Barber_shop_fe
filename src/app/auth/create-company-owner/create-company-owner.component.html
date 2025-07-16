@@ -1,6 +1,6 @@
 <form (ngSubmit)="onSubmit()" #form="ngForm" class="form-container">
   <div class="form-group">
-    <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="Ime" required #firstNameModel="ngModel" />
+    <input type="text" id="firstName" name="firstName" [(ngModel)]="firstName" placeholder="Ime" required #firstNameModel="ngModel" />
     <div class="error" *ngIf="firstNameModel.invalid && firstNameModel.touched">Ime je obavezno.</div>
   </div>
 

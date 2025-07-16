@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { showError } from '../../../utils';
 
 @Component({
   selector: 'app-register',
@@ -46,9 +47,11 @@ export class RegisterComponent {
               messages.push(...validationErrors[field]);
             }
           }
-          alert(messages.join('\n'));
+          showError(messages.join('\n'));
+          //alert(messages.join('\n'));
         } else {
-          alert('Greška pri registraciji.');
+          showError('Greška pri registraciji. Molimo pokušajte ponovo.');
+          //alert('Greška pri registraciji.');
           console.log(error);
         }
       }

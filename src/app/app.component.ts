@@ -8,26 +8,27 @@ import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,MatToolbarModule, MatButtonModule,RouterLink,NgIf],
+  imports: [RouterOutlet, MatToolbarModule, MatButtonModule, RouterLink, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  year = new Date().getFullYear();
   title = 'BarberVisual';
   isLoggedIn = false;
- constructor(private authService: AuthService,private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
 
   ngOnInit(): void {
-    this.authService.isLoggedin$.subscribe(status=>{
-      this.isLoggedIn=status
+    this.authService.isLoggedin$.subscribe(status => {
+      this.isLoggedIn = status
       console.log(this.isLoggedIn)
     })
   }
-  logout(){
+  logout() {
     this.authService.logout()
-    this.router.navigate(["/companies"])
-    
+    this.router.navigate(["/home"])
+
   }
 
 }

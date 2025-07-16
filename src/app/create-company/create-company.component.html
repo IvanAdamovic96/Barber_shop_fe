@@ -1,12 +1,70 @@
-<form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
+<div class="pt-5 pb-5">
+  <form class="company-form" (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
+    <h2>Kreiraj kompaniju</h2>
+
+    <label for="companyName">Naziv kompanije</label>
+    <input type="text" id="companyName" name="companyName" [(ngModel)]="companyName" required/>
+
+    <label for="image">Slike kompanije</label>
+
+    <div class="drag-drop-area">
+      <i class="fas fa-folder-open icon-folder"></i>
+      <p>Prevucite slike ovde, ili <label for="image" class="browse-link">Pretrazite</label></p>
+      <input type="file" id="image" name="image" multiple accept="image/" (change)="onFileSelected($event)"
+        style="display: none;" required />
+        
+      <div *ngIf="uploadedFiles.length === 0" class="error-text">
+        Dodajte barem jednu sliku.
+      </div>
+    </div>
+
+    <div class="uploaded-files-container">
+      <div class="uploaded-file-item" *ngFor="let file of uploadedFiles; let i = index">
+        <img *ngIf="file.url" [src]="file.url" alt="Preview" class="thumbnail" />
+        <div class="file-details">
+          <span class="file-name">{{ file.name }}</span>
+          <span class="file-size">{{ file.size }}</span>
+        </div>
+        <button type="button" class="btn-remove-file" (click)="removeFile(i)">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">Kreiraj kompaniju</button>
+  </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
   <label for="companyName">Company Name:</label>
   <input type="text" id="companyName" name="companyName" [(ngModel)]="companyName" required />
-
   <label for="image">Company Image:</label>
-  <!--<input type="file" id="image" name="image" multiple (change)="onFileSelected($event)" accept="image/*" />-->
-
   <button type="submit">Create Company</button>
-
 
   <div class="drag-drop-area">
 
@@ -35,4 +93,4 @@
     </div>
   </div>
 
-</form>
+</form> -->

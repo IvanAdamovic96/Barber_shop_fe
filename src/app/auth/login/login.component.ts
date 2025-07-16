@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { showError, showSuccess } from '../../../utils';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,7 @@ export class LoginComponent {
   password: string = '';
   
 
-  constructor(private authService: AuthService,private router: Router) { }
+  constructor(private authService: AuthService,private router: Router, private toastr: ToastrService) { }
 
 
 
@@ -28,6 +30,8 @@ export class LoginComponent {
 
     this.authService.login(formData).subscribe({
       next: (response) => {
+        //this.toastr.success('Login successful', 'Success');
+        //showSuccess('Login successful');
         this.router.navigate(['/home'])
 
         this.authService.setOwnerCompanyId(response.companyId);
@@ -45,9 +49,11 @@ export class LoginComponent {
               messages.push(...validationErrors[field]);
             }
           }
-          alert(messages.join('\n'));
+          showError(messages.join('\n'));
+          //alert(messages.join('\n'));
         } else if (error.status === 500) {
-          alert(error.error.message);
+          showError('Greška pri prijavi. ' + error.error.message);
+          //alert(error.error.message);
           console.log(error.error.message);
         }
       }

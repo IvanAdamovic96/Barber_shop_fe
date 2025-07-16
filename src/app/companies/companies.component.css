@@ -1,20 +1,10 @@
-/*:host {
-  display: block;
-  background-image: url('https://www.wineenthusiast.com/wp-content/uploads/2022/09/HERO_Barbershop_Cuts_and_Cocktails_Credit_David_J_Crewe_1920x1280-1280x853.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  padding-top: 20px;
-}
-*/
 /* Glavna pozadina sa staklastim efektom */
 .container-fluid {
-  background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 16px;
-  padding: 30px;
+  /* background-color: rgba(255, 255, 255, 0.75); */
+  /* border-radius: 16px; */
+  /* padding: 30px; */
   backdrop-filter: blur(5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+ /*  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); */
 }
 
 /* Dugme za kreiranje kompanije */
@@ -23,7 +13,7 @@
   color: #000;
   border: none;
   padding: 10px 20px;
-  font-weight: bold;
+  /* font-weight: bold; */
   border-radius: 8px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);

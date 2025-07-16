@@ -1,7 +1,8 @@
-mat-toolbar {
+/* mat-toolbar {
   display: flex;
   justify-content: space-around;
-}
+} */
+
 .divklasa {
   display: block;
   background-size: cover;
@@ -9,7 +10,7 @@ mat-toolbar {
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
-  padding-top: 40px;
+  padding-top: 0px;
 }
 .navbar {
   background-color: #3f51b5;
@@ -37,4 +38,12 @@ mat-toolbar {
 .nav-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 5px;
+}
+
+footer{
+  background-color: #3f51b5;
+  color: white;
+  /* padding: 2px; */
+  bottom: 0;
+  width: 100%;
 }

@@ -1,3 +1,133 @@
+.company-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.company-form h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.company-form label {
+    display: block;
+    font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.company-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.drag-drop-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.icon-folder {
+    font-size: 36px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.browse-link {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.error-text {
+    color: #d9534f;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.uploaded-files-container {
+    margin-top: 20px;
+}
+
+.uploaded-file-item {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.thumbnail {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.file-details {
+    flex-grow: 1;
+}
+
+.file-name {
+    font-weight: 600;
+    display: block;
+}
+
+.file-size {
+    font-size: 12px;
+    color: #666;
+}
+
+.btn-remove-file {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #dc3545;
+    cursor: pointer;
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+
+
+
+
+/* 
 .drag-drop-area {
     border: 2px dashed #666;
     border-radius: 10px;
@@ -5,7 +135,7 @@
     text-align: center;
     color: #000000;
     width: 250px;
-   
+
     background-color: #ececec;
     cursor: pointer;
     transition: background-color 0.2s ease, border-color 0.2s ease;
@@ -38,6 +168,7 @@
     text-decoration: underline;
     cursor: pointer;
 }
+
 .uploaded-files-container {
     margin-top: 20px;
 }
@@ -101,4 +232,4 @@
 
 .btn-remove-file:hover {
     color: #f00;
-}
+} */

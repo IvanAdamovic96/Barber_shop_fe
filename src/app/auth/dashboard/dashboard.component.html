@@ -1,0 +1,61 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-2 sidebar-wrapper">
+            <ul class="navbar-nav flex-column sidebar">
+                <!-- Admin links -->
+                <div *ngIf="isAdmin">
+                    <li class="nav-item">
+                        <a class="nav-link active" routerLink="/dashboard/home"
+                            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-house-door-fill"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/dashboard/companies" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-person-circle"></i> Companies
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/dashboard/users" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-gear-fill"></i> Users
+                        </a>
+                    </li>
+                </div>
+
+                <!-- Company Owner links -->
+                <div *ngIf="isOwner">
+                    <li class="nav-item">
+                        <a class="nav-link active" routerLink="/dashboard/appointments" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-house-door-fill"></i> Appointments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/dashboard/barbers" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-person-circle"></i> Barbers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/dashboard/haircuts" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-gear-fill"></i> Haircuts
+                        </a>
+                    </li>
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/dashboard/logout" (click)="logout()">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col p-5">
+            <!-- Ovde komponente uslovno renderovane klikom na linkove iznad -->
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

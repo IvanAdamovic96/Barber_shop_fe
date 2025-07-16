@@ -1,4 +1,4 @@
-<div class="container-fluid mt-4">
+<div class="container-fluid p-5">
 
   <div *ngIf="companies.length === 0" class="text-center">
     <p class="text-muted fs-5">Učitavanje kompanija...</p>
@@ -6,22 +6,21 @@
 
   <div *ngIf="isLoggedIn && isAdmin" class="text-end mb-3">
     <button class="custom-button" routerLink="/create-company">
-      ➕ Kreiraj svoju kompaniju!
+      <i class="fa-solid fa-circle-plus"></i> Kreiraj kompaniju
     </button>
   </div>
 
   <div *ngIf="filteredCompaniesByOwnerId.length > 0 || companies.length > 0" class="container">
     <div class="row justify-content-center">
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let company of filteredCompaniesByOwnerId.length ? filteredCompaniesByOwnerId : companies">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+        *ngFor="let company of filteredCompaniesByOwnerId.length ? filteredCompaniesByOwnerId : companies">
         <div class="company-card">
 
           <!-- Slika kompanije (prva ako postoji) -->
-           <img *ngIf="company.imageUrl && company.imageUrl.length"
-              [src]="company.imageUrl[company.currentImageIndex || 0]"
-              alt="{{ company.companyName }}"
-              class="img-fluid rounded mb-2 w-100"
-              style="height: 200px; object-fit: cover;"
-              referrerpolicy="no-referrer" />
+          <img *ngIf="company.imageUrl && company.imageUrl.length"
+            [src]="company.imageUrl[company.currentImageIndex || 0]" alt="{{ company.companyName }}"
+            class="img-fluid rounded mb-2 w-100" style="height: 200px; object-fit: cover;"
+            referrerpolicy="no-referrer" />
 
           <button *ngIf="company.imageUrl.length > 1"
             class="btn btn-light position-absolute top-50 start-0 translate-middle-y" (click)="prevImage(company)">
