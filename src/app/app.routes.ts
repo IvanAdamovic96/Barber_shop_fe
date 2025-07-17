@@ -19,6 +19,7 @@ import { DashboardBarbersComponent } from './auth/dashboard-components/dashboard
 import { DashboardHaircutsComponent } from './auth/dashboard-components/dashboard-haircuts/dashboard-haircuts.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
+import { DashboardReservationsComponent } from './auth/dashboard-components/dashboard-reservations/dashboard-reservations.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -43,6 +44,7 @@ export const routes: Routes = [
             { path: 'appointments', component: DashboardAppointmentsComponent, canActivate: [OwnerGuard], title: 'Dashboard - Appointments' },
             { path: 'barbers', component: DashboardBarbersComponent, canActivate: [OwnerGuard], title: 'Dashboard - Barbers' },
             { path: 'haircuts', component: DashboardHaircutsComponent, canActivate: [OwnerGuard], title: 'Dashboard - Haircuts' },
+            { path: 'reservations', component: DashboardReservationsComponent, title: 'Dashboard - Reservations' },
         ]
     },
     { path: '**', redirectTo: 'home' }

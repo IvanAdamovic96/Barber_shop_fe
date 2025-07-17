@@ -3,6 +3,8 @@ import { BarberService } from '../services/barber.service';
 import { CommonModule, NgFor, NgIf, NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { showError } from '../../utils';
 
 @Component({
   selector: 'app-companies',
@@ -32,24 +34,27 @@ export class CompaniesComponent implements OnInit {
       next: (data) => {
         this.companies = data.map(company => ({
           ...company,
-          // Ako je imageUrl string → pretvori u niz sa jednom slikom
           imageUrl: typeof company.imageUrl === 'string' ? [company.imageUrl] : (company.imageUrl ?? []),
           currentImageIndex: 0
         }));
 
+        this.applyOwnerFilter();
+
+        /*
         if (this.authService.isOwner()) {
           const id = this.checkOwner();
-          console.log('Owner company ID:', id);
 
           this.filteredCompaniesByOwnerId = this.companies.filter(company => company.companyId === id);
           console.log('Filtered companies for owner:', this.filteredCompaniesByOwnerId);
-        }
 
+        }
+        */
 
         console.log(this.companies);
       },
-      error: (err) => {
-        console.error('Greška prilikom dohvatanja kompanija', err);
+      error: (error: HttpErrorResponse) => {
+        showError('Greška prilikom dohvatanja kompanija. ' + error.error.message);
+        console.error('Greška prilikom dohvatanja kompanija', error.error.message);
       }
     });
 
@@ -59,15 +64,43 @@ export class CompaniesComponent implements OnInit {
   }
 
 
-  checkOwner(): string {
+  checkOwner(): string[] {
+    const ownerCompanyIds = this.authService.getOwnerCompanyIds();
     if (this.authService.isOwner()) {
-      const ownerCompanyId = this.authService.getOwnerCompanyId();
-      return ownerCompanyId ? ownerCompanyId : '';
+      if (ownerCompanyIds) {
+        try {
+          const ids: string[] = JSON.parse(ownerCompanyIds);
+          console.log('Owner company ID from service:', ownerCompanyIds);
+          return ids;
+
+        } catch (error) {
+          console.error('Error parsing owner company IDs:', error);
+          return [];
+        }
+      }
     }
-    return '';
+    return [];
   }
 
+  applyOwnerFilter(): void {
+    if (this.authService.isOwner()) {
+      const ownerIds = this.checkOwner();
 
+      if (ownerIds && ownerIds.length > 0) {
+        this.filteredCompaniesByOwnerId = this.companies.filter(company =>
+          ownerIds.includes(company.companyId)
+        );
+        console.log('Filtrirane kompanije vlasnika:', this.filteredCompaniesByOwnerId);
+      } else {
+        this.filteredCompaniesByOwnerId = [];
+        console.warn('Nema pronađenih ID-jeva za filtriranje kompanija.');
+      }
+    } else {
+      this.filteredCompaniesByOwnerId = this.companies;
+    }
+  }
+
+  
   nextImage(company: any) {
     if (company.imageUrl.length === 0) return;
     company.currentImageIndex = (company.currentImageIndex + 1) % company.imageUrl.length;

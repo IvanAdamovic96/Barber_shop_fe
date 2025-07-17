@@ -34,7 +34,7 @@ export class LoginComponent {
         //showSuccess('Login successful');
         this.router.navigate(['/home'])
 
-        this.authService.setOwnerCompanyId(response.companyId);
+        this.authService.setOwnerCompanyId(response.companyIds);
 
         console.log('Login successful:', response);
         

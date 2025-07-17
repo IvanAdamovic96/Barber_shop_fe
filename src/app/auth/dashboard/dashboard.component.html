@@ -5,8 +5,8 @@
                 <!-- Admin links -->
                 <div *ngIf="isAdmin">
                     <li class="nav-item">
-                        <a class="nav-link active" routerLink="/dashboard/home"
-                            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link active" routerLink="/dashboard/home" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
                             <i class="bi bi-house-door-fill"></i> Dashboard
                         </a>
                     </li>
@@ -42,6 +42,15 @@
                         <a class="nav-link" routerLink="/dashboard/haircuts" routerLinkActive="active"
                             [routerLinkActiveOptions]="{ exact: true }">
                             <i class="bi bi-gear-fill"></i> Haircuts
+                        </a>
+                    </li>
+                </div>
+
+                <div *ngIf="isRegisteredUser">
+                    <li class="nav-item">
+                        <a class="nav-link active" routerLink="/dashboard/reservations" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-house-door-fill"></i> Reservations
                         </a>
                     </li>
                 </div>

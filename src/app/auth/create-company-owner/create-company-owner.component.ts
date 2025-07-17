@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { showConfirm, showError } from '../../../utils';
 
 @Component({
   selector: 'app-create-company-owner',
@@ -33,28 +34,36 @@ export class CreateCompanyOwnerComponent {
     formData.append('CompanyOwnerDto.FirstName', this.firstName);
     formData.append('CompanyOwnerDto.LastName', this.lastName);
 
-    this.authService.createCompanyOwner(formData).subscribe({
-      next: (response) => {
-        this.owner = response.data
-        console.log('Uspešno kreiran Vlasnik kompanije:', response);
-        this.router.navigate(['/companies']);
-      },
-      error: (error: HttpErrorResponse) => {
-        if (error.status === 400 && error.error?.errors) {
-          const validationErrors = error.error.errors;
-          const messages: string[] = [];
+    showConfirm('Da li ste sigurni da želite da kreirate vlasnika kompanije sa ovim podacima?', () => {
+      this.authService.createCompanyOwner(formData).subscribe({
+        next: (response) => {
+          this.owner = response.data
+          console.log('Uspešno kreiran vlasnik kompanije:', response);
+          this.router.navigate(['/companies']);
+        },
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 400 && error.error?.errors) {
+            const validationErrors = error.error.errors;
+            const messages: string[] = [];
 
-          for (const field in validationErrors) {
-            if (validationErrors.hasOwnProperty(field)) {
-              messages.push(...validationErrors[field]);
+            for (const field in validationErrors) {
+              if (validationErrors.hasOwnProperty(field)) {
+                messages.push(...validationErrors[field]);
+              }
             }
+            showError('Greška pri kreiranju vlasnika kompanije: ' + messages.join(', '));
+            //alert(messages.join('\n'));
+          } else {
+            showError('Greška pri kreiranju vlasnika kompanije.');
+            //alert('Greška pri registraciji.');
+            console.log(error);
           }
-          alert(messages.join('\n'));
-        } else {
-          alert('Greška pri registraciji.');
-          console.log(error);
         }
-      }
-    });
+      });
+    })
   }
+
+
+
+
 }

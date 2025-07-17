@@ -1,1 +1,74 @@
-<p>contact works!</p>
+<div class="contact-us-container">
+    <div class="contact-hero">
+        <h1 class="contact-title">Kontaktirajte nas</h1>
+        <p class="contact-subtitle">Tu smo da odgovorimo na sva vaša pitanja</p>
+    </div>
+
+    <div class="contact-section info-section">
+        <div class="row">
+            <div class="col-12 col-md-6 mb-4 mb-md-0">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-geo-alt-fill contact-icon"></i>
+                        <h5 class="card-title mt-3">Naša adresa</h5>
+                        <p class="card-text">
+                            Ulica Nikole Pašića<br>
+                            18101 Niš, Srbija
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-telephone-fill contact-icon"></i>
+                        <h5 class="card-title mt-3">Pozovite nas</h5>
+                        <p class="card-text">
+                            Telefon: <a href="tel:+381181234567">+381 18 123 4567</a><br>
+                            Radno vreme: Pon-Pet, 09:00 - 17:00
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-section form-section">
+        <h2 class="text-center">Pošaljite nam poruku</h2>
+        <p class="text-center lead mb-4">Popunite formu ispod i javićemo vam se u najkraćem roku.</p>
+
+        <form>
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Ime i prezime</label>
+                <input type="text" class="form-control" id="fullName" placeholder="Vaše ime i prezime" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email adresa</label>
+                <input type="email" class="form-control" id="email" placeholder="vas.email@example.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="subject" class="form-label">Naslov poruke</label>
+                <input type="text" class="form-control" id="subject" placeholder="Npr. Pitanje o terminu">
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Vaša poruka</label>
+                <textarea class="form-control" id="message" rows="5" placeholder="Napišite svoju poruku ovde..."
+                    required></textarea>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg mt-3">Pošalji poruku</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="contact-section map-section text-center">
+        <h2>Pronađite nas na mapi</h2>
+        <p class="lead mb-4">Posetite nas u našim prostorijama.</p>
+        <div class="map-placeholder rounded shadow-sm">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5397.391772089014!2d21.891561023096077!3d43.31846827238897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4755b0b17223cd9f%3A0x559ac557c6ea1a69!2z0J3QuNC60L7Qu9C1INCf0LDRiNC40ZvQsCwg0J3QuNGI!5e1!3m2!1ssr!2srs!4v1752775703004!5m2!1ssr!2srs"
+                height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</div>

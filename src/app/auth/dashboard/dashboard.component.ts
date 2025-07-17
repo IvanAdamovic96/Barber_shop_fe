@@ -12,20 +12,26 @@ import { CommonModule } from '@angular/common';
 export class DashboardComponent implements OnInit {
   isAdmin = false;
   isOwner = false;
+  isRegisteredUser = false;
 
   constructor(private router: Router, private authService: AuthService) { }
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
     this.isOwner = this.authService.isOwner();
+    this.isRegisteredUser = this.authService.isRegisteredUser();
 
     if (this.router.url === '/dashboard' || this.router.url === '/dashboard/') {
       if (this.isAdmin) {
         this.router.navigate(['/dashboard/home']);
       } else if (this.isOwner) {
         this.router.navigate(['/dashboard/appointments']);
+      } else if (this.isRegisteredUser) {
+        this.router.navigate(['/dashboard/reservations']);
       } else {
         this.router.navigate(['/dashboard/home']);
-      }// else if (this.authService.hasRole('ClientUser')) {
+      }
+
+      // else if (this.authService.hasRole('ClientUser')) {
       //   this.router.navigate(['/dashboard/my-profile']);
       // }
     }

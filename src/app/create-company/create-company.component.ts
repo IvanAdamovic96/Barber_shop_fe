@@ -3,7 +3,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { BarberService } from '../services/barber.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { showError, showSuccess } from '../../utils';
+import { showConfirm, showError, showSuccess } from '../../utils';
 import { Router } from '@angular/router';
 
 interface DisplayFile {
@@ -21,7 +21,7 @@ interface DisplayFile {
 })
 export class CreateCompanyComponent implements OnInit {
   companyName: string = '';
-  selectedFile: File[] | null = null;
+  //selectedFile: File[] | null = null;
   uploadedFiles: DisplayFile[] = [];
   isDragging: boolean = false;
 
@@ -34,8 +34,11 @@ export class CreateCompanyComponent implements OnInit {
 
 
   onSubmit(): void {
-    if (!this.companyName || !this.selectedFile) {
-      showError('Morate uneti naziv kompanije i ubaciti barem jednu sliku.');
+    if (!this.companyName) {
+      showError('Morate uneti naziv kompanije!');
+      return;
+    } else if (!this.uploadedFiles) {
+      showError('Morate ubaciti barem jednu sliku!');
       return;
     }
 
@@ -43,21 +46,29 @@ export class CreateCompanyComponent implements OnInit {
 
     formData.append('CompanyName', this.companyName);
 
+    this.uploadedFiles.forEach(displayFile => {
+      formData.append('Image', displayFile.file, displayFile.name);
+    });
+
+    showConfirm('Da li ste sigurni da želite da kreirate kompaniju sa ovim podacima?', async () => {
+      this.barberService.createCompany(formData).subscribe({
+        next: (response) => {
+          this.router.navigate(['/companies']);
+          console.log('Company created:', response);
+          showSuccess('Kompanija uspešno kreirana.');
+        },
+        error: (error) => {
+          showError('Došlo je do greške prilikom kreiranja kompanije.');
+          console.error('Error creating company:', error);
+        }
+      });
+    })
+    /*
     for (let i = 0; i < this.selectedFile.length; i++) {
       formData.append('Image', this.selectedFile[i]);
     }
+    */
 
-    this.barberService.createCompany(formData).subscribe({
-      next: (response) => {
-        this.router.navigate(['/companies']);
-        console.log('Company created:', response);
-        showSuccess('Kompanija uspešno kreirana.');
-      },
-      error: (error) => {
-        showError('Došlo je do greške prilikom kreiranja kompanije.');
-        console.error('Error creating company:', error);
-      }
-    });
   }
 
 
@@ -73,6 +84,7 @@ export class CreateCompanyComponent implements OnInit {
     this.isDragging = false;
   }
 
+  //treba fix za drag and drop da se napravi - ne registruju se drop-ovani fajlovi kad se posalje form
   @HostListener('drop', ['$event']) onDrop(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
@@ -84,7 +96,7 @@ export class CreateCompanyComponent implements OnInit {
   }
 
   onFileSelected(event: any): void {
-    this.selectedFile = Array.from(event.target.files);
+    //this.selectedFile = Array.from(event.target.files);
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.processFiles(input.files);
@@ -96,7 +108,6 @@ export class CreateCompanyComponent implements OnInit {
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
       if (!file.type.startsWith('image/')) {
-
         continue;
       }
       const reader = new FileReader();
@@ -124,7 +135,7 @@ export class CreateCompanyComponent implements OnInit {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
-  
+
   removeFile(index: number): void {
     this.uploadedFiles.splice(index, 1);
   }

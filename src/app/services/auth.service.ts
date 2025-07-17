@@ -10,10 +10,10 @@ export class AuthService {
     private roleKey = 'user_role';
     private owner_company_id = 'owner_company_id';
     private loggedIn = new BehaviorSubject<boolean>(this.checkStorage())
-    isLoggedin$ =this.loggedIn.asObservable()
+    isLoggedin$ = this.loggedIn.asObservable()
 
     constructor(private http: HttpClient) { }
-    private checkStorage(): boolean{
+    private checkStorage(): boolean {
         return !!localStorage.getItem("user_role")
 
     }
@@ -26,20 +26,27 @@ export class AuthService {
                 }
             })
         );
-        
+
     }
-    createCompanyOwner(formData: FormData):Observable<any>{
+    createCompanyOwner(formData: FormData): Observable<any> {
         return this.http.post<any>(`${this.authUrl}/createCompanyOwner`, formData)
     }
 
-    register(formData : FormData):Observable<any>{
+    register(formData: FormData): Observable<any> {
         return this.http.post<any>(`${this.authUrl}/register`, formData)
     }
 
-    checkIfCompanyOwnerExists(id: string):Observable<any>{
+    checkIfCompanyOwnerExists(id: string): Observable<any> {
         return this.http.get<any>(`${this.authUrl}/checkIfCompanyOwnerExists?CompanyId=${id}`)
     }
 
+    getOwners(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.authUrl}/get-owners`)
+    }
+
+    assignCompanyOwnerToCompany(formData: FormData): Observable<any> {
+        return this.http.post<any>(`${this.authUrl}/assign-company-owner`, formData)
+    }
 
     logout(): void {
         //localStorage.removeItem(this.roleKey);
@@ -55,15 +62,19 @@ export class AuthService {
         return this.getRole() === 'Admin';
     }
 
-    isOwner(): boolean{
+    isOwner(): boolean {
         return this.getRole() === 'CompanyOwner';
     }
 
-    setOwnerCompanyId(role: any) {
-        localStorage.setItem(this.owner_company_id, role);
+    isRegisteredUser(): boolean {
+        return this.getRole() === 'RegisteredUser';
     }
-    getOwnerCompanyId(): string | null {
-       return localStorage.getItem(this.owner_company_id);
+
+    setOwnerCompanyId(ids: any[]) {
+        localStorage.setItem(this.owner_company_id, JSON.stringify(ids));
+    }
+    getOwnerCompanyIds(): string | null {
+        return localStorage.getItem(this.owner_company_id);
     }
 
     isLoggedIn(): boolean {

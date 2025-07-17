@@ -1,11 +1,13 @@
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BarberService } from '../services/barber.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FormsModule, NgModel } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { CreateCompanyOwnerComponent } from '../auth/create-company-owner/create-company-owner.component';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { showConfirm, showError, showSuccess } from '../../utils';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-company-barbers',
@@ -27,6 +29,8 @@ export class CompanyBarbersComponent implements OnInit {
   datepicker: Date = new Date();
   company: any;
   selectedHaircut: string = '';
+  selectedOwner: string = '';
+  owners: any[] = [];
 
   //(YYYY-MM-DD)
   freeAppointments: any[] = [];
@@ -41,11 +45,12 @@ export class CompanyBarbersComponent implements OnInit {
   routeSubscription: Subscription | undefined;
   currentEntityId: string | null = null;
 
-  constructor(private barberService: BarberService, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(private barberService: BarberService, private route: ActivatedRoute, 
+              private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.routeSubscription = this.route.paramMap.subscribe(params => {
-      this.currentEntityId = params.get('id'); // 'id' mora da se poklapa sa onim u ruting konfiguraciji
+      this.currentEntityId = params.get('id');
       if (this.currentEntityId) {
         console.log('ID dohvaćen u roditelj komponenti:', this.currentEntityId);
       } else {
@@ -61,12 +66,14 @@ export class CompanyBarbersComponent implements OnInit {
           this.check = res
           console.log("company onwer exist: " + this.check)
         },
-        error: (err) => {
-          // greška
+        error: (error: HttpErrorResponse) => {
+          console.error("Greška prilikom provere vlasnika kompanije:", error.error.message);
+          showError("Greška prilikom provere vlasnika kompanije: " + error.error.message);
         }
       });
     } else {
-      console.error("Nedostaje companyId u URL-u");
+      //console.error("Nedostaje companyId u URL-u");
+      showError("Nedostaje companyId u URL-u");
     }
 
 
@@ -75,15 +82,23 @@ export class CompanyBarbersComponent implements OnInit {
     })
 
 
-
     this.isAdmin = this.authService.isAdmin();
-
     this.isOwner = this.authService.isOwner();
 
     const now = new Date();
-
     this.today = now.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
 
+
+    this.authService.getOwners().subscribe({
+      next: (res) => {
+        this.owners = res
+        console.log("Owners: " + this.owners)
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error.error.message);
+        showError("Greška prilikom dobijanja svih vlasnika: " + error.error.message);
+      }
+    })
 
 
 
@@ -94,8 +109,9 @@ export class CompanyBarbersComponent implements OnInit {
           this.barbers = data;
           console.log(this.barbers)
         },
-        error: (err) => {
-          console.error(err);
+        error: (error: HttpErrorResponse) => {
+          showError("Greška prilikom dobijanja frizera kompanije: " + error.error.message);
+          console.error("Greška prilikom dobijanja frizera kompanije: " + error.error.message);
         }
       });
 
@@ -104,8 +120,9 @@ export class CompanyBarbersComponent implements OnInit {
           this.company = data;
           console.log(this.company)
         },
-        error: (err) => {
-          console.error(err);
+        error: (error: HttpErrorResponse) => {
+          showError("Greška prilikom dobijanja detalja kompanije: " + error.error.message);
+          console.error("Greška prilikom dobijanja detalja kompanije: " + error.error.message);
         }
       });
 
@@ -117,8 +134,9 @@ export class CompanyBarbersComponent implements OnInit {
           }
           console.log(this.haircuts)
         },
-        error: (err) => {
-          console.log(err);
+        error: (error: HttpErrorResponse) => {
+          showError("Greška prilikom dobijanja svih usluga kompanije: " + error.error.message);
+          console.log("Greška prilikom dobijanja svih usluga kompanije: " + error.error.message);
         }
       })
     }
@@ -131,7 +149,11 @@ export class CompanyBarbersComponent implements OnInit {
     console.log("Izabran:", this.selectedHaircut);
   }
 
-
+  onOwnerSelected(ownerId: string): string {
+    this.selectedOwner = ownerId;
+    console.log("Izabran:", this.selectedOwner);
+    return this.selectedOwner
+  }
 
   onBarberClick(barberId: string): void {
     this.selectedBarberId = barberId;
@@ -140,33 +162,32 @@ export class CompanyBarbersComponent implements OnInit {
 
   onDateChange(): void {
     if (typeof this.selectedDate === 'string') {
-      this.selectedDate = new Date(this.selectedDate); // konvertuj iz stringa u Date
+      this.selectedDate = new Date(this.selectedDate);
     }
 
     if (this.selectedBarberId) {
       this.loadAppointments();
     }
   }
+
   onDatePick(date: string): void {
     this.selectedAppointment = date;
     console.log(date)
   }
 
   loadAppointments(): void {
-    //const date = new Date(this.selectedDate); //  osiguraj da je Date objekat
-
     this.barberService.getAllFreeAppointmentsByBarberId(this.selectedDate, this.selectedBarberId!).subscribe({
       next: (data) => {
-        console.log(data);
         this.freeAppointments = data
-        console.log(this.freeAppointments)
+        console.log("Slobodni termini su: " + this.freeAppointments)
       },
-      error: (err) => console.error(err)
+      error: (error: HttpErrorResponse) => {
+        showError("Greška prilikom dobijanja slobodnih termina: " + error.error.message);
+        console.error("Greška prilikom dobijanja slobodnih termina:", error.error.message);
+      }
     });
   }
-  /*
-  
-  */
+
 
   onSubmit(): void {
     const formData = new FormData();
@@ -178,7 +199,6 @@ export class CompanyBarbersComponent implements OnInit {
       selectedDateTime = this.datepicker;
     }
 
-    // Dodaj sva polja sa tačnim nazivima koje backend očekuje
     formData.append('Schedule.firstName', this.firstName);
     formData.append('Schedule.lastName', this.lastName);
     formData.append('Schedule.email', this.email);
@@ -190,17 +210,40 @@ export class CompanyBarbersComponent implements OnInit {
       formData.append('Schedule.barberId', this.selectedBarberId);
     }
 
-    // Poziv servisa
     this.barberService.createSchedule(formData).subscribe({
       next: (response) => {
         console.log('Uspešno zakazano:', response);
+        this.router.navigate(['/dashboard']);
+        
       },
-      error: (error) => {
-        console.error('Greška prilikom zakazivanja:', error);
+      error: (error: HttpErrorResponse) => {
+        showError('Greška prilikom zakazivanja: ' + error.error.message);
+        console.error('Greška prilikom zakazivanja:', error.error.message);
       }
     });
 
   }
 
+
+  onSubmitSelectedOwner(): void {
+    const formData = new FormData();
+    formData.append('AssignCompanyOwnerDto.ApplicationUserId', this.selectedOwner);
+    if (this.companyId) {
+      formData.append('AssignCompanyOwnerDto.CompanyId', this.companyId);
+    }
+
+    showConfirm('Da li ste sigurni da želite dodeliti vlasnika kompanije?', () => {
+      this.authService.assignCompanyOwnerToCompany(formData).subscribe({
+        next: (response) => {
+          showSuccess('Uspešno dodeljen vlasnik kompanije');
+          console.log('Uspešno dodeljen vlasnik kompanije:', response);
+        },
+        error: (error: HttpErrorResponse) => {
+          showError('Greška prilikom dodele vlasnika kompanije' + error.message);
+          console.error('Greška prilikom dodele vlasnika kompanije:', error);
+        }
+      });
+    })
+  }
 
 }

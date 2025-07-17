@@ -21,10 +21,29 @@
 
   <h2>{{company.companyName}}</h2>
 
-  <div *ngIf="isLoggedIn && isAdmin && check===false">
-    <h4>Kreiraj vlasnika berbernice</h4>
-    <app-create-company-owner [companyId]="companyId">
-    </app-create-company-owner>
+  <div class="row" *ngIf="isLoggedIn && isAdmin && check===false">
+    <h4>Kreiraj vlasnika kompanije</h4>
+    <div class="col">
+      <app-create-company-owner [companyId]="companyId">
+      </app-create-company-owner>
+    </div>
+
+    <div class="packages-container col">
+      <h4>Postojeći vlasnici</h4>
+      <form (ngSubmit)="onSubmitSelectedOwner()" #form="ngForm">
+        <label *ngFor="let owner of owners" class="package-item">
+          <input type="radio" name="selectedOwner" [value]="owner.ownerId" [checked]="selectedOwner === owner.ownerId"
+            (change)="onOwnerSelected(owner.ownerId)" />
+
+          <div class="package-content">
+            <div class="type">{{ owner.email }}</div>
+            <div class="duration">{{ owner.name }}</div>
+            <div class="price">{{ owner.phoneNumber }}</div>
+          </div>
+        </label>
+        <button class="mt-1 btn btn-success" type="submit">Dodeli Vlasnika</button>
+      </form>
+    </div>
 
   </div>
 
