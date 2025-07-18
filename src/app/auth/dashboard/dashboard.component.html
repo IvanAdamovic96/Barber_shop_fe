@@ -27,12 +27,6 @@
                 <!-- Company Owner links -->
                 <div *ngIf="isOwner">
                     <li class="nav-item">
-                        <a class="nav-link active" routerLink="/dashboard/appointments" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }">
-                            <i class="bi bi-house-door-fill"></i> Appointments
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" routerLink="/dashboard/barbers" routerLinkActive="active"
                             [routerLinkActiveOptions]="{ exact: true }">
                             <i class="bi bi-person-circle"></i> Barbers
@@ -44,8 +38,25 @@
                             <i class="bi bi-gear-fill"></i> Haircuts
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" routerLink="/dashboard/appointments" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-house-door-fill"></i> Appointments
+                        </a>
+                    </li>
                 </div>
 
+                <!-- Barber links -->
+                <div *ngIf="isBarber">
+                    <li class="nav-item">
+                        <a class="nav-link active" routerLink="/dashboard/barber-appointments" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-house-door-fill"></i> Appointments
+                        </a>
+                    </li>
+                </div>
+
+                <!-- Registered User links -->
                 <div *ngIf="isRegisteredUser">
                     <li class="nav-item">
                         <a class="nav-link active" routerLink="/dashboard/reservations" routerLinkActive="active"

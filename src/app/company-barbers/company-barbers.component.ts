@@ -45,8 +45,8 @@ export class CompanyBarbersComponent implements OnInit {
   routeSubscription: Subscription | undefined;
   currentEntityId: string | null = null;
 
-  constructor(private barberService: BarberService, private route: ActivatedRoute, 
-              private authService: AuthService, private router: Router) { }
+  constructor(private barberService: BarberService, private route: ActivatedRoute,
+    private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.routeSubscription = this.route.paramMap.subscribe(params => {
@@ -57,9 +57,12 @@ export class CompanyBarbersComponent implements OnInit {
         console.warn('ID nije pronađen u URL-u roditelj komponente.');
       }
     });
+    this.isAdmin = this.authService.isAdmin();
+    this.isOwner = this.authService.isOwner();
 
     this.companyId = this.route.snapshot.paramMap.get('id');
 
+    // Provera da li postoji vlasnik kompanije
     if (this.companyId) {
       this.authService.checkIfCompanyOwnerExists(this.companyId).subscribe({
         next: (res) => {
@@ -72,7 +75,6 @@ export class CompanyBarbersComponent implements OnInit {
         }
       });
     } else {
-      //console.error("Nedostaje companyId u URL-u");
       showError("Nedostaje companyId u URL-u");
     }
 
@@ -82,13 +84,11 @@ export class CompanyBarbersComponent implements OnInit {
     })
 
 
-    this.isAdmin = this.authService.isAdmin();
-    this.isOwner = this.authService.isOwner();
-
     const now = new Date();
-    this.today = now.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
+    this.today = now.toISOString().split('T')[0];
 
 
+    // Učitavanje vlasnika kompanije
     this.authService.getOwners().subscribe({
       next: (res) => {
         this.owners = res
@@ -101,8 +101,7 @@ export class CompanyBarbersComponent implements OnInit {
     })
 
 
-
-
+    // Učitavanje frizera, usluga i detalja kompanije
     if (this.companyId) {
       this.barberService.getAllBarbersByCompanyId(this.companyId).subscribe({
         next: (data) => {
@@ -188,6 +187,11 @@ export class CompanyBarbersComponent implements OnInit {
     });
   }
 
+  getSelectedBarberName(): string {
+    const selectedBarber = this.barbers.find(b => b.barberId === this.selectedBarberId);
+    return selectedBarber ? selectedBarber.barberName : 'N/A';
+  }
+
 
   onSubmit(): void {
     const formData = new FormData();
@@ -214,7 +218,7 @@ export class CompanyBarbersComponent implements OnInit {
       next: (response) => {
         console.log('Uspešno zakazano:', response);
         this.router.navigate(['/dashboard']);
-        
+
       },
       error: (error: HttpErrorResponse) => {
         showError('Greška prilikom zakazivanja: ' + error.error.message);
@@ -236,6 +240,8 @@ export class CompanyBarbersComponent implements OnInit {
       this.authService.assignCompanyOwnerToCompany(formData).subscribe({
         next: (response) => {
           showSuccess('Uspešno dodeljen vlasnik kompanije');
+          //this.router.navigate(['/companies' + this.companyId]);
+          window.location.reload();
           console.log('Uspešno dodeljen vlasnik kompanije:', response);
         },
         error: (error: HttpErrorResponse) => {

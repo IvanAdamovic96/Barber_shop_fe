@@ -20,31 +20,34 @@ import { DashboardHaircutsComponent } from './auth/dashboard-components/dashboar
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { DashboardReservationsComponent } from './auth/dashboard-components/dashboard-reservations/dashboard-reservations.component';
+import { DashboardBarberAppointmentsComponent } from './auth/dashboard-components/dashboard-barber-appointments/dashboard-barber-appointments.component';
+import { BarberGuard } from './auth/guards/barber-guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent, title: 'BarberApp - Home' },
-    { path: 'about', component: AboutComponent, title: 'BarberApp - About' },
-    { path: 'contact', component: ContactComponent, title: 'BarberApp - Contact Us' },
-    { path: 'companies', component: CompaniesComponent, title: 'BarberApp - Companies' },
-    { path: 'companies/:id', component: CompanyBarbersComponent, title: 'BarberApp - Company details' },
-    { path: 'create-company', component: CreateCompanyComponent, canActivate: [AdminGuard], title: 'BarberApp - Create Company' },
-    { path: 'create-barber/:companyId', component: CreateBarberComponent, canActivate: [OwnerGuard], title: 'BarberApp - Create Barber' },
-    { path: 'create-haircut/:companyId', component: AddHaircutComponent, canActivate: [OwnerGuard], title: 'BarberApp - Create Haircut' },
+    { path: 'home', component: HomeComponent, title: 'BarberApp - Naslovna' },
+    { path: 'about', component: AboutComponent, title: 'BarberApp - O nama' },
+    { path: 'contact', component: ContactComponent, title: 'BarberApp - Kontakt' },
+    { path: 'companies', component: CompaniesComponent, title: 'BarberApp - Kompanije' },
+    { path: 'companies/:id', component: CompanyBarbersComponent, title: 'BarberApp - Detalji kompanije' },
+    { path: 'create-company', component: CreateCompanyComponent, canActivate: [AdminGuard], title: 'BarberApp - Kreiranje kompanije' },
+    { path: 'create-barber/:companyId', component: CreateBarberComponent, canActivate: [OwnerGuard], title: 'BarberApp - Kreiranje frizera' },
+    { path: 'create-haircut/:companyId', component: AddHaircutComponent, canActivate: [OwnerGuard], title: 'BarberApp - Kreiranje usluga' },
     { path: 'login', component: LoginComponent, title: 'BarberApp - Login' },
-    { path: 'register', component: RegisterComponent, title: 'BarberApp - Register' },
+    { path: 'register', component: RegisterComponent, title: 'BarberApp - Registracija' },
     { path: 'create-company-owner/:companyId', component: CreateCompanyOwnerComponent, canActivate: [AdminGuard] },
     {
         path: 'dashboard', component: DashboardComponent,
         children: [
             /* { path: '', redirectTo: '', pathMatch: 'full'}, */
             { path: 'home', component: DashboardHomeComponent, canActivate: [AdminGuard], title: 'Dashboard - Admin' },
-            { path: 'companies', component: DashboardCompaniesComponent, canActivate: [AdminGuard], title: 'Dashboard - Companies' },
-            { path: 'users', component: DashboardUsersComponent, canActivate: [AdminGuard], title: 'Dashboard - Users' },
-            { path: 'appointments', component: DashboardAppointmentsComponent, canActivate: [OwnerGuard], title: 'Dashboard - Appointments' },
-            { path: 'barbers', component: DashboardBarbersComponent, canActivate: [OwnerGuard], title: 'Dashboard - Barbers' },
-            { path: 'haircuts', component: DashboardHaircutsComponent, canActivate: [OwnerGuard], title: 'Dashboard - Haircuts' },
-            { path: 'reservations', component: DashboardReservationsComponent, title: 'Dashboard - Reservations' },
+            { path: 'companies', component: DashboardCompaniesComponent, canActivate: [AdminGuard], title: 'Dashboard - Kompanije' },
+            { path: 'users', component: DashboardUsersComponent, canActivate: [AdminGuard], title: 'Dashboard - Korisnici' },
+            { path: 'appointments', component: DashboardAppointmentsComponent, canActivate: [OwnerGuard], title: 'Dashboard - Termini' },
+            { path: 'barbers', component: DashboardBarbersComponent, canActivate: [OwnerGuard], title: 'Dashboard - Frizeri' },
+            { path: 'haircuts', component: DashboardHaircutsComponent, canActivate: [OwnerGuard], title: 'Dashboard - Usluge' },
+            { path: 'barber-appointments', component: DashboardBarberAppointmentsComponent, canActivate: [BarberGuard], title: 'Dashboard - Zakazivanja' },
+            { path: 'reservations', component: DashboardReservationsComponent, title: 'Dashboard - Rezervisani termini' },
         ]
     },
     { path: '**', redirectTo: 'home' }

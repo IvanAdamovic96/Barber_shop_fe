@@ -1,3 +1,222 @@
+<div class="company-details-container">
+  <div *ngIf="company?.imageUrl?.length > 0" class="container-fluid pt-4 pb-4">
+    <div class="container mb-4 carousel-wrapper">
+      <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner rounded shadow-sm">
+          <div *ngFor="let image of company.imageUrl; let i = index" class="carousel-item"
+            [ngClass]="{ active: i === 0 }">
+            <img [src]="image" class="d-block w-100 company-carousel-img" [alt]="'Slika ' + (i + 1)" />
+          </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#companyCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#companyCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mb-4 text-center">
+    <h1 class="company-name-title">{{company?.companyName}}</h1>
+    <p class="company-address lead">{{company?.address}} {{company?.city}}</p>
+    <p class="company-description">{{company?.description}}</p>
+  </div>
+
+  <div class="container section-card p-4 mb-5" *ngIf="isLoggedIn && isAdmin && check===false">
+    <h3 class="section-title">Administracija Kompanije</h3>
+    <div class="row gx-4">
+      <div class="col-12 col-md-6 mb-4 mb-md-0">
+        <div class="card h-100 shadow-sm p-3">
+          <div class="card-body">
+            <h4 class="card-title">Kreiraj novog vlasnika</h4>
+            <app-create-company-owner [companyId]="companyId"></app-create-company-owner>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="card h-100 shadow-sm p-3">
+          <div class="card-body">
+            <h4 class="card-title">Dodeli postojećeg vlasnika</h4>
+            <form (ngSubmit)="onSubmitSelectedOwner()" #form="ngForm">
+              <div class="owner-selection-container">
+                <label *ngFor="let owner of owners" class="owner-item card mb-2 p-3">
+                  <input type="radio" name="selectedOwner" [value]="owner.ownerId"
+                    [checked]="selectedOwner === owner.ownerId" (change)="onOwnerSelected(owner.ownerId)"
+                    class="form-check-input me-2" />
+                  <div class="owner-content">
+                    <div class="owner-email">{{ owner.email }}</div>
+                    <div class="owner-name">{{ owner.name }}</div>
+                    <div class="owner-phone">{{ owner.phoneNumber }}</div>
+                  </div>
+                </label>
+                <p *ngIf="owners?.length === 0" class="text-muted mt-3">Nema dostupnih vlasnika za dodelu.</p>
+              </div>
+              <button class="btn btn-success mt-3 w-100" type="submit">Dodeli Vlasnika</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container section-card p-4 mb-5">
+    <h3 class="section-title">Frizeri i Usluge</h3>
+    <div class="row align-items-center mb-4">
+      <div class="col-12 col-md-8">
+        <p class="lead">Upoznajte naše talentovane frizere i istražite usluge koje nudimo.</p>
+      </div>
+      <div class="col-12 col-md-4 text-md-end">
+        <a *ngIf="isLoggedIn && isOwner" class="btn btn-info me-2 mt-2 mt-md-0"
+          [routerLink]="['/create-barber', companyId]">
+          <i class="bi bi-person-plus-fill me-1"></i> Dodaj frizera
+        </a>
+        <a *ngIf="isLoggedIn && isOwner" class="btn btn-success mt-2 mt-md-0"
+          [routerLink]="['/create-haircut', companyId]">
+          <i class="bi bi-scissors me-1"></i> Dodaj usluge
+        </a>
+      </div>
+    </div>
+
+    <div class="barbers-list-container">
+      <h4 class="mb-3">Naši frizeri</h4>
+      <div class="list-group">
+        <a *ngFor="let barber of barbers"
+          class="list-group-item list-group-item-action barber-item d-flex justify-content-between align-items-center"
+          (click)="onBarberClick(barber.barberId)" [class.active]="selectedBarberId === barber.barberId">
+          <div>
+            <i class="bi bi-person-badge-fill me-2"></i>
+            <strong>{{ barber.barberName }}</strong>
+            <small class="text-muted d-block">Kompanija: {{ barber.companyName }}</small>
+          </div>
+          <i class="bi bi-chevron-right"></i>
+        </a>
+        <p *ngIf="barbers?.length === 0" class="text-muted mt-3 text-center">Nema registrovanih frizera za ovu
+          kompaniju.</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedBarberId" class="container section-card p-4 mb-5">
+    <h3 class="section-title">Zakazivanje termina</h3>
+
+    <div class="row align-items-center mb-4">
+      <div class="col-12 col-md-6">
+        <h4 class="mb-2">Slobodni termini za {{ selectedDate | date:'dd.MM.yyyy.' }}</h4>
+        <p class="text-muted">Izabran frizer: <strong>{{ getSelectedBarberName() }}</strong></p>
+      </div>
+      <div class="col-12 col-md-6 text-md-end">
+        <label for="datePicker" class="form-label visually-hidden">Izaberi datum:</label>
+        <input type="date" id="datePicker" [min]="today" [(ngModel)]="selectedDate" (change)="onDateChange()"
+          class="form-control d-inline-block w-auto" />
+      </div>
+    </div>
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 mb-4"
+      *ngIf="freeAppointments && freeAppointments.length > 0; else noAppointments">
+      <div class="col" *ngFor="let appointment of freeAppointments">
+        <div class="appointment-card card h-100 text-center"
+          [ngClass]="{ 'bg-primary text-white': selectedAppointment === appointment.dateAndTime }"
+          (click)="onDatePick(appointment.dateAndTime)">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <h6 class="card-title mb-0">
+              {{ appointment.dateAndTime | date:'HH:mm' : 'UTC' }}
+            </h6>
+            <button class="btn btn-sm mt-3"
+              [ngClass]="selectedAppointment === appointment.dateAndTime ? 'btn-light' : 'btn-outline-primary'">
+              {{ selectedAppointment === appointment.dateAndTime ? 'Izabran' : 'Izaberi' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noAppointments>
+      <div class="alert alert-info text-center mt-3" role="alert">
+        Nema slobodnih termina za izabrani datum. Molimo Vas da izaberete drugi datum ili frizera.
+      </div>
+    </ng-template>
+
+    <div class="booking-form-container mt-5 p-4 bg-light rounded shadow-sm">
+      <h4 class="mb-4 text-center">Popunite detalje za termin</h4>
+      <form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
+        <div class="row gy-4">
+          <div class="col-md-6">
+            <label for="firstName" class="form-label">Ime</label>
+            <input class="form-control" type="text" id="firstName" name="firstName" placeholder="Vaše ime"
+              [(ngModel)]="firstName" required>
+          </div>
+          <div class="col-md-6 ">
+            <label for="lastName" class="form-label">Prezime</label>
+            <input class="form-control" type="text" id="lastName" name="lastName" placeholder="Vaše prezime"
+              [(ngModel)]="lastName" required>
+          </div>
+          <div class="col-md-12">
+            <label for="email" class="form-label">Email adresa</label>
+            <input class="form-control" type="email" id="email" name="email" placeholder="vas.email@example.com"
+              [(ngModel)]="email" required>
+          </div>
+          <div class="col-md-12">
+            <label for="phoneNumber" class="form-label">Broj telefona</label>
+            <input class="form-control" type="tel" id="phoneNumber" name="phoneNumber" placeholder="Broj telefona"
+              [(ngModel)]="phoneNumber" required>
+          </div>
+          <div class="col-md-12">
+            <h5 class="mt-4 mb-3">Odaberite uslugu</h5>
+            <div class="packages-container services-list-container">
+              <label *ngFor="let haircut of haircuts" class="package-item card mb-2 p-3">
+                <input type="radio" name="selectedHaircut" [value]="haircut.haircutId"
+                  [checked]="selectedHaircut === haircut.haircutId" (change)="onHaircutChange(haircut.haircutId)"
+                  class="form-check-input me-2" required />
+                <div class="package-content">
+                  <div class="type">{{ haircut.haircutType }}</div>
+                  <div class="duration">{{ haircut.duration }} min</div>
+                  <div class="price">{{ haircut.price | number }} RSD</div>
+                </div>
+              </label>
+              <p *ngIf="haircuts?.length === 0" class="text-muted mt-3">Nema definisanih usluga za ovog frizera.</p>
+            </div>
+          </div>
+          <div class="col-md-12 text-center mt-4">
+            <button class="btn btn-primary btn-lg w-100" type="submit"
+              [disabled]="!selectedAppointment || !selectedHaircut || companyForm.invalid">
+              Zakaži termin!
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 <div *ngIf="company?.imageUrl?.length > 0" class="container-fluid pt-5 pb-5">
 
   <div class="container mb-4">
@@ -48,11 +267,11 @@
   </div>
 
   <h2>Frizeri u kompaniji</h2>
-  <a *ngIf="isLoggedIn && (isAdmin || isOwner)" class="btn btn-info mt-3 me-1"
+  <a *ngIf="isLoggedIn && isOwner" class="btn btn-info mt-3 me-1"
     [routerLink]="['/create-barber', companyId]">
     Dodaj frizera
   </a>
-  <a *ngIf="isLoggedIn && (isAdmin || isOwner)" class="btn btn-success mt-3"
+  <a *ngIf="isLoggedIn && isOwner" class="btn btn-success mt-3"
     [routerLink]="['/create-haircut', companyId]">
     Dodaj usluge
   </a>
@@ -80,7 +299,6 @@
           [ngClass]="{ 'bg-primary text-white': selectedAppointment === appointment.dateAndTime }">
           <div class="card-body">
             <h6 class="card-title">
-              <!-- {{ appointment.dateAndTime | date:'dd.MM.yyyy. HH:mm' : 'UTC' }} -->
               {{ appointment.dateAndTime | date:'HH:mm' : 'UTC' }}
             </h6>
             <button class="btn btn-light mt-2" (click)="onDatePick(appointment.dateAndTime)">
@@ -138,4 +356,4 @@
       <p>Nema slobodnih termina za izabrani datum.</p>
     </ng-template>
   </div>
-</div>
+</div> -->

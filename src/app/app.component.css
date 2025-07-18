@@ -2,16 +2,23 @@
   display: flex;
   justify-content: space-around;
 } */
-
-.divklasa {
-  display: block;
+.klasa {
   background-size: cover;
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.divklasa {
+  display: block;
+  /* background-size: cover;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  background-position: center;
+  background-repeat: no-repeat; */
   min-height: 100vh;
   padding-top: 0px;
 }
+
 .navbar {
   background-color: #3f51b5;
   padding: 1rem;
@@ -40,7 +47,7 @@
   border-radius: 5px;
 }
 
-footer{
+footer {
   background-color: #3f51b5;
   color: white;
   /* padding: 2px; */

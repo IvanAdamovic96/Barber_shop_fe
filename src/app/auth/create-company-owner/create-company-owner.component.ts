@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { showConfirm, showError } from '../../../utils';
+import { showConfirm, showError, showSuccess } from '../../../utils';
 
 @Component({
   selector: 'app-create-company-owner',
@@ -39,6 +39,8 @@ export class CreateCompanyOwnerComponent {
         next: (response) => {
           this.owner = response.data
           console.log('Uspešno kreiran vlasnik kompanije:', response);
+          showSuccess('Uspešno kreiran vlasnik kompanije');
+          //window.location.reload();
           this.router.navigate(['/companies']);
         },
         error: (error: HttpErrorResponse) => {

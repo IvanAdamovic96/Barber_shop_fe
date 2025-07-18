@@ -1,4 +1,360 @@
-.carousel-inner img {
+/* Osnovni kontejner stranice */
+.company-details-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Naslov kompanije i opis */
+.company-name-title {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.company-address,
+.company-description {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Carousel */
+.carousel-wrapper {
+  background-color: #f0f2f5;
+  /* Blaga pozadina za carousel */
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.company-carousel-img {
+  max-height: 450px;
+  /* Povećaj visinu za bolji prikaz */
+  object-fit: cover;
+  border-radius: 8px;
+  /* Blaga zaobljenja unutar carousela */
+}
+
+/* Opšti stil za sekcije (Admin, Frizeri, Zakazivanje) */
+.section-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-weight: 600;
+  border-bottom: 3px solid #3498db;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+/* Sekcija za dodelu vlasnika (Admin) */
+.owner-selection-container {
+  max-height: 250px;
+  /* Ograniči visinu da se skroluje */
+  overflow-y: auto;
+  padding-right: 10px;
+  /* Za skrolbar */
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fcfcfc;
+  padding: 15px;
+}
+
+.owner-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.owner-item:hover {
+  background-color: #f0f8ff;
+  /* Svetlo plava pozadina na hover */
+  border-color: #cceeff;
+}
+
+.owner-item input[type="radio"] {
+  transform: scale(1.2);
+  /* Veći radio button */
+  cursor: pointer;
+}
+
+.owner-content {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.owner-email {
+  font-weight: 600;
+  color: #3498db;
+}
+
+.owner-name,
+.owner-phone {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Sekcija Frizeri i Usluge */
+.barbers-list-container {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.barber-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-left: 5px solid transparent;
+  /* Za vizuelni efekat aktivnog linka */
+  transition: all 0.3s ease;
+}
+
+.barber-item:hover {
+  background-color: #e9ecef;
+  border-left-color: #3498db;
+}
+
+.barber-item.active {
+  background-color: #d1ecf1;
+  /* Svetlo plava za aktivnog frizera */
+  border-left-color: #17a2b8;
+  /* Tamnija plava za aktivnog frizera */
+  color: #0c5460;
+  font-weight: bold;
+}
+
+.barber-item .bi {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.barber-item.active .bi {
+  color: #0c5460;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+/* Sekcija za zakazivanje termina */
+.appointment-card {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.appointment-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-card.bg-primary {
+  background-color: #3498db !important;
+  border-color: #3498db !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.appointment-card .card-body {
+  padding: 1rem;
+}
+
+.appointment-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.booking-form-container {
+  border: 1px solid #e0e0e0;
+  padding: 30px;
+  background-color: #fcfcfc;
+}
+
+.services-list-container {
+  max-height: 200px;
+  /* Ograniči visinu za skrolovanje usluga */
+  overflow-y: auto;
+  padding-right: 10px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fcfcfc;
+  padding: 15px;
+}
+
+.package-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.package-item:hover {
+  background-color: #f0f8ff;
+  border-color: #cceeff;
+}
+
+.package-item input[type="radio"] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.package-content {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.package-content .type {
+  font-weight: 600;
+  color: #3498db;
+}
+
+.package-content .duration,
+.package-content .price {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Dugmad */
+.btn-info {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  color: #fff;
+}
+
+.btn-info:hover {
+  background-color: #138496;
+  border-color: #138496;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #fff;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #218838;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  border-color: #3498db;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+}
+
+.btn-outline-primary {
+  color: #3498db;
+  border-color: #3498db;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3498db;
+  color: #fff;
+}
+
+/* Responsivnost */
+@media (max-width: 768px) {
+  .company-name-title {
+    font-size: 2.5rem;
+  }
+
+  .company-address,
+  .company-description {
+    font-size: 1rem;
+  }
+
+  .company-carousel-img {
+    max-height: 250px;
+  }
+
+  .section-card {
+    padding: 20px;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    display: block;
+    /* Za punu širinu podvučenog */
+  }
+
+  .btn.btn-info,
+  .btn.btn-success {
+    width: 100%;
+    margin-bottom: 10px;
+    margin-right: 0 !important;
+    /* Resetuje me-2 */
+  }
+
+  .owner-selection-container,
+  .services-list-container {
+    max-height: 150px;
+    /* Manja visina na mobilnom */
+  }
+
+  .appointment-card .card-title {
+    font-size: 0.9rem;
+  }
+
+  .appointment-card .btn {
+    padding: 0.375rem 0.75rem;
+    /* Manji padding za dugme */
+    font-size: 0.8rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .carousel-inner img {
   max-height: 400px;
   object-fit: cover;
 }
@@ -46,4 +402,4 @@ input[type="radio"] {
   font-weight: bold;
   font-size: 15px;
   margin-top: 5px;
-}
+} */

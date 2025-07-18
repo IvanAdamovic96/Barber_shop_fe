@@ -13,7 +13,7 @@ export class BarberService {
   private companyUrl = 'http://localhost:5045/company';
   private barberUrl = 'http://localhost:5045/barber';
   private scheduleUrl = 'http://localhost:5045/schedule';
-  
+
   constructor(private http: HttpClient) { }
 
   getAllCompanies(): Observable<CompanyConfigModel[]> {
@@ -28,18 +28,18 @@ export class BarberService {
     return this.http.post<any>(`${this.companyUrl}/create-company`, formData);
   }
 
-  getCompanyDetailsById(id:string):Observable<any>{
+  getCompanyDetailsById(id: string): Observable<any> {
     return this.http.get<any>(`${this.companyUrl}/getCompanyDetailsById?CompanyId=${id}`);
   }
 
-  createHaircut(formData: FormData):Observable<any>{
+  createHaircut(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.companyUrl}/create-haircut`, formData);
   }
 
-  getAllHaircutsByCompanyId(id:string):Observable<any>{
+  getAllHaircutsByCompanyId(id: string): Observable<any> {
     return this.http.get<any>(`${this.companyUrl}/get-all-haircuts-by-companyid?CompanyId=${id}`);
   }
-  
+
   createBarber(formData: any): Observable<any> {
     return this.http.post<any>(`${this.barberUrl}/create`, formData)
   }
@@ -52,10 +52,14 @@ export class BarberService {
     return this.http.get<any>(`${this.scheduleUrl}/GetAllFreeAppointments?selectedDate=${encodedDate}&barberId=${barberId}`)
   }
 
-  createSchedule(formData: FormData):Observable<any>{
+  createSchedule(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.scheduleUrl}/CreateAppointment`, formData)
   }
 
+
+  deleteCompany(companyId: string): Observable<string> {
+    return this.http.delete(`${this.companyUrl}/delete-company?CompanyId=${companyId}`, { responseType: 'text' as const });
+  }
 
 }
 

@@ -48,6 +48,8 @@ export class AuthService {
         return this.http.post<any>(`${this.authUrl}/assign-company-owner`, formData)
     }
 
+
+
     logout(): void {
         //localStorage.removeItem(this.roleKey);
         localStorage.clear();
@@ -64,6 +66,10 @@ export class AuthService {
 
     isOwner(): boolean {
         return this.getRole() === 'CompanyOwner';
+    }
+
+    isBarber(): boolean {
+        return this.getRole() === 'Barber';
     }
 
     isRegisteredUser(): boolean {
