@@ -1,1 +1,111 @@
-<p>dashboard-barbers works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-3 mb-4 mb-lg-0">
+            <div class="card shadow-sm company-list-card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">Kompanije</h4>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <a *ngFor="let company of companies"
+                            class="list-group-item list-group-item-action company-item d-flex justify-content-between align-items-center"
+                            (click)="onCompanyClick(company.companyId)"
+                            [class.active]="selectedCompanyId === company.companyId">
+                            <div>
+                                <i class="fa-solid fa-shop"></i>
+                                <strong> {{ company.companyName }}</strong>
+                                <!-- <small *ngIf="company.address" class="text-muted d-block">{{ company.address }}, {{
+                                    company.city }}</small> -->
+                            </div>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                        <p *ngIf="companies?.length === 0" class="text-muted mt-3 text-center p-3">Nema registrovanih
+                            kompanija.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-9">
+            <div *ngIf="selectedCompanyId" class="card shadow-sm barbers-list-card">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="card-title mb-0">Frizeri u kompaniji: {{ selectedCompanyName }}</h4>
+                </div>
+                <div class="card-body">
+                    <div *ngIf="isLoadingBarbers" class="text-center py-4">
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="visually-hidden">Učitavanje frizera...</span>
+                        </div>
+                        <p class="mt-2">Učitavanje frizera...</p>
+                    </div>
+
+                    <div *ngIf="barbersError" class="alert alert-danger text-center" role="alert">
+                        {{ barbersError }}
+                        <button type="button" class="btn btn-sm btn-outline-danger ms-3"
+                            (click)="loadBarbersForCompany(selectedCompanyId!)">Pokušaj ponovo</button>
+                    </div>
+
+                    <div *ngIf="!isLoadingBarbers && !barbersError">
+                        <div *ngIf="barbersOfSelectedCompany.length > 0" class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th class="table-header" scope="col">#</th>
+                                        <th class="table-header" scope="col">Ime Frizera</th>
+                                        <th class="table-header" scope="col">Telefon</th>
+                                        <th class="table-header" colspan="2" scope="col">Radno vreme</th>
+                                        <th class="table-header" scope="col">Akcije</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let barber of barbersOfSelectedCompany; let j = index">
+                                        <td>{{ j + 1 }}</td>
+                                        <td>
+                                            <a class="barber-name-link">
+                                                {{ barber.barberName }}
+                                            </a>
+                                        </td>
+                                        <td class="text-muted small">{{ barber.phoneNumber }}</td>
+                                        <td class="text-muted small">{{ barber.individualStartTime }}</td>
+                                        <td class="text-muted small">{{ barber.individualEndTime }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info me-2"
+                                                (click)="editBarber(barber.barberId)">
+                                                <i class="fa-solid fa-pen-to-square"></i> Izmeni
+                                            </button>
+                                            <button class="btn btn-sm btn-danger"
+                                                (click)="deleteBarber(barber.barberId)">
+                                                <i class="fa-solid fa-trash-can"></i> Obriši
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p *ngIf="barbersOfSelectedCompany.length === 0" class="text-muted text-center py-3">
+                            Za izabranu kompaniju nema registrovanih frizera.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!selectedCompanyId" class="alert alert-info text-center shadow-sm" role="alert">
+                Odaberite kompaniju iz liste da biste videli njene frizere.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="list-group">
+    <a *ngFor="let company of companies"
+        class="list-group-item list-group-item-action barber-item d-flex justify-content-between align-items-center"
+        (click)="onCompanyClick(company.companyId)" [class.active]="selectedCompanyId === company.companyId">
+        <div>
+            <i class="bi bi-person-badge-fill me-2"></i>
+            <strong>{{ company.barberName }}</strong>
+            <small class="text-muted d-block">Kompanija: {{ company.companyName }}</small>
+        </div>
+        <i class="bi bi-chevron-right"></i>
+    </a>
+    <p *ngIf="companies?.length === 0" class="text-muted mt-3 text-center">Nema registrovanih kompanija.</p>
+</div> -->

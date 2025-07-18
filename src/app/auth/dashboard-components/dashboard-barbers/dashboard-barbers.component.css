@@ -1,0 +1,211 @@
+/* Container padding */
+.container-fluid {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Card styles for both lists */
+.company-list-card,
+.barbers-list-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 1.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.company-list-card .card-header {
+    background-color: #3498db !important;
+}
+
+.barbers-list-card .card-header {
+    background-color: #6c757d !important;
+}
+
+/* List group for companies */
+.list-group-flush .list-group-item {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    padding: 15px 20px;
+    transition: background-color 0.2s ease, border-left-color 0.2s ease;
+    border-left: 5px solid transparent;
+}
+
+.list-group-flush .list-group-item:first-child {
+    border-top: none;
+}
+
+.list-group-flush .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.company-item.active {
+    background-color: #e0f2f7;
+    border-left-color: #3498db;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.company-item:hover {
+    background-color: #f0f8ff;
+    cursor: pointer;
+}
+
+.company-item .bi {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.company-item.active .bi {
+    color: #3498db;
+}
+
+/* Table styling for barbers */
+.barbers-list-card .table {
+    margin-bottom: 0;
+}
+
+.barbers-list-card thead th,
+.barbers-list-card tbody td {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    border-bottom: 2px solid #e9ecef;
+    text-align: center;
+}
+
+.barbers-list-card tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: default;
+}
+
+.barber-name-link {
+    color: #3498db;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.barber-name-link:hover {
+    text-decoration: underline;
+}
+
+/* Action buttons */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #138496;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Specific styling for the initial alert when no company is selected */
+.alert-info {
+    background-color: #e0f7fa;
+    border-color: #b2ebf2;
+    color: #00796b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+
+    .company-list-card,
+    .barbers-list-card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .barbers-list-card table thead {
+        display: none;
+    }
+
+    .barbers-list-card table tbody,
+    .barbers-list-card table tr,
+    .barbers-list-card table td {
+        display: block;
+        width: 100%;
+    }
+
+    .barbers-list-card table tr {
+        margin-bottom: 10px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .barbers-list-card table td {
+        text-align: right;
+        padding-left: 40%;
+        position: relative;
+    }
+
+    .barbers-list-card table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        width: calc(40% - 24px);
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    /* Assign data-labels to td elements in HTML for responsive table */
+    .barbers-list-card table td:nth-of-type(1):before {
+        content: "Redni br.";
+    }
+
+    .barbers-list-card table td:nth-of-type(2):before {
+        content: "Ime Frizera";
+    }
+
+    .barbers-list-card table td:nth-of-type(3):before {
+        content: "ID Frizera";
+    }
+
+    .barbers-list-card table td:nth-of-type(4):before {
+        content: "Akcije";
+    }
+
+    .btn-sm {
+        width: 100%;
+        margin-bottom: 5px;
+        margin-right: 0 !important;
+    }
+}

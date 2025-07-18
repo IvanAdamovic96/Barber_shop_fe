@@ -58,12 +58,13 @@ export class DashboardCompaniesComponent implements OnInit {
 
 
 
-  deleteCompany(companyid: string): void {
+  deleteCompany(companyId: string): void {
     showConfirm('Da li ste sigurni da želite da obrišete ovu kompaniju?', () => {
-      this.barberService.deleteCompany(companyid).subscribe({
+      this.barberService.deleteCompany(companyId).subscribe({
         next: () => {
           showSuccess('Kompanija uspešno obrisana.');
-          this.router.navigate(['/dashboard/companies']);
+          this.companies = this.companies.filter(c => c.companyId !== companyId);
+          //this.router.navigate(['/dashboard/companies']);
         },
         error: (error: HttpErrorResponse) => {
           showError('Došlo je do greške prilikom brisanja kompanije. ' + error.error.message);

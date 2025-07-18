@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, tap } from "rxjs";
 export class AuthService {
     private authUrl = 'http://localhost:5045/auth';
     private roleKey = 'user_role';
+    private user_email = 'user_email';
     private owner_company_id = 'owner_company_id';
     private loggedIn = new BehaviorSubject<boolean>(this.checkStorage())
     isLoggedin$ = this.loggedIn.asObservable()
@@ -22,6 +23,7 @@ export class AuthService {
             tap(response => {
                 if (response && response.role) {
                     localStorage.setItem(this.roleKey, response.role);
+                    localStorage.setItem(this.user_email, response.email);
                     this.loggedIn.next(true)
                 }
             })
@@ -48,6 +50,9 @@ export class AuthService {
         return this.http.post<any>(`${this.authUrl}/assign-company-owner`, formData)
     }
 
+    getCompaniesByOwnerEmail(email: string): Observable<any[]>{
+        return this.http.get<any[]>(`${this.authUrl}/get-companies-by-owner-email?Email=${email}`);
+    }
 
 
     logout(): void {
@@ -58,6 +63,10 @@ export class AuthService {
 
     getRole(): string | null {
         return localStorage.getItem(this.roleKey);
+    }
+    
+    getEmail(): string {
+        return localStorage.getItem(this.user_email) ?? '';
     }
 
     isAdmin(): boolean {
