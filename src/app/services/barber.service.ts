@@ -47,7 +47,6 @@ export class BarberService {
   getAllFreeAppointmentsByBarberId(selectedDate: Date, barberId: string): Observable<any> {
     selectedDate.setHours(12, 0, 0, 0);
     const isoString = selectedDate.toISOString();
-    // Encode za URL
     const encodedDate = encodeURIComponent(isoString);
     return this.http.get<any>(`${this.scheduleUrl}/GetAllFreeAppointments?selectedDate=${encodedDate}&barberId=${barberId}`)
   }
@@ -61,13 +60,9 @@ export class BarberService {
     return this.http.delete(`${this.companyUrl}/delete-company?CompanyId=${companyId}`, { responseType: 'text' as const });
   }
 
+  //srediti
+  updateCompany(formData: FormData): Observable<string> {
+    return this.http.put(`${this.companyUrl}/update-company`, formData, { responseType: 'text' as const });
+  }
+
 }
-
-
-
-/* private baseUrl = 'http://localhost:5045/company'; // 👈 ispravno bez "/api"
-
-  constructor(private http: HttpClient) {}
-
-  getAllCompanies(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/getAllCompanies`); */

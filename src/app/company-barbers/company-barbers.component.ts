@@ -155,6 +155,12 @@ export class CompanyBarbersComponent implements OnInit {
   }
 
   onBarberClick(barberId: string): void {
+    if (this.selectedBarberId === barberId) {
+      this.selectedBarberId = null;
+      //this.selectedCompanyName = null;
+      //this.barbersOfSelectedCompany = [];
+      return;
+    }
     this.selectedBarberId = barberId;
     this.loadAppointments();
   }

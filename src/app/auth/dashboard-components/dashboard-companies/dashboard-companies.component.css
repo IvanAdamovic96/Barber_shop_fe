@@ -139,6 +139,249 @@
     color: #721c24;
 }
 
+
+
+
+
+/* Add to your existing dashboard-companies.component.css */
+
+/* --- Edit Form Section Styling --- */
+.company-edit-form-section {
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    /* Space from the table above */
+}
+
+.company-edit-form-section .section-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #3498db;
+    display: inline-block;
+    padding-bottom: 8px;
+}
+
+.company-edit-form-section .form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 5px;
+}
+
+.company-edit-form-section .form-control {
+    border-radius: 8px;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.company-edit-form-section .form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    /* Primary color shadow */
+}
+
+.company-edit-form-section .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.company-edit-form-section .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.company-edit-form-section .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.company-edit-form-section .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.company-edit-form-section .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.img-thumbnail {
+    border: 1px solid #dee2e6;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #fff;
+}
+
+
+
+/* Postojeće slike kontejner */
+.existing-images-container {
+    display: flex;
+    /* Koristi flexbox za horizontalni raspored */
+    flex-wrap: wrap;
+    /* Omogućava prelamanje u novi red */
+    gap: 10px;
+    /* Razmak između slika */
+    margin-bottom: 15px;
+}
+
+.existing-image-thumbnail {
+    max-width: 120px;
+    /* Podesite veličinu kako vam odgovara */
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #e0e0e0;
+    padding: 2px;
+    border-radius: 8px;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #dc3545;
+    /* Crvena boja */
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.remove-image-btn:hover {
+    background-color: #c82333;
+}
+
+/* Stilovi za Drag & Drop Area (preuzeto iz create-company) */
+.drag-drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.drag-drop-area.is-dragging {
+    border-color: #3498db;
+    background-color: #eaf6ff;
+}
+
+.drag-drop-area .icon-folder {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+.drag-drop-area p {
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.drag-drop-area .browse-link {
+    color: #3498db;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* Stilovi za uploaded files container (preuzeto iz create-company) */
+.uploaded-files-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.uploaded-file-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
+    max-width: 250px;
+    /* Podesite širinu kartice */
+}
+
+.uploaded-file-item .thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 15px;
+}
+
+.uploaded-file-item .file-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.uploaded-file-item .file-name {
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    /* Ograničenje širine za ime fajla */
+}
+
+.uploaded-file-item .file-size {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.uploaded-file-item .btn-remove-file {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #aaa;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.2s ease;
+}
+
+.uploaded-file-item .btn-remove-file:hover {
+    color: #dc3545;
+}
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .company-edit-form-section .section-title {
+        font-size: 1.8rem;
+        text-align: center;
+        display: block;
+    }
+}
+
+
 /* Responzivnost */
 @media (max-width: 768px) {
     .dashboard-companies-container {
@@ -160,14 +403,12 @@
 
     .table thead {
         display: none;
-        /* Sakrij zaglavlje tabele na malim ekranima */
     }
 
     .table tbody,
     .table tr,
     .table td {
         display: block;
-        /* Prikaz redova i ćelija kao blok elemenata */
         width: 100%;
     }
 
@@ -186,7 +427,6 @@
 
     .table td::before {
         content: attr(data-label);
-        /* Koristi 'data-label' atribut za naslov kolone */
         position: absolute;
         left: 12px;
         width: calc(50% - 24px);
@@ -197,7 +437,6 @@
         color: #2c3e50;
     }
 
-    /* Podesi data-label za svaku ćeliju u HTML-u */
     .table td:nth-of-type(1):before {
         content: "Redni br.";
     }
@@ -230,6 +469,5 @@
 
     .btn-sm+.btn-sm {
         margin-left: 0 !important;
-        /* Resetuje me-2 */
     }
 }

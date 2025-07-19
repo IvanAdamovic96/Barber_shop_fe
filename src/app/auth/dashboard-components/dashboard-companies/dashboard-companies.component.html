@@ -62,4 +62,105 @@
             </tbody>
         </table>
     </div>
+
+
+    <div *ngIf="isEditing" id="editCompanyForm" class="company-edit-form-section bg-white rounded shadow-sm p-4 mt-4">
+        <h3 class="section-title mb-4">Izmeni Kompaniju: {{ selectedCompanyForEdit?.companyName }}</h3>
+
+        <div *ngIf="isLoadingCompanyForEdit" class="text-center my-4">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Učitavanje detalja...</span>
+            </div>
+            <p class="mt-2">Učitavanje detalja kompanije...</p>
+        </div>
+
+        <div *ngIf="editCompanyError" class="alert alert-danger text-center my-4" role="alert">
+            {{ editCompanyError }}
+            <button type="button" class="btn btn-sm btn-outline-danger ms-3"
+                (click)="editCompany(selectedCompanyForEdit!.companyId)">Pokušaj ponovo</button>
+        </div>
+
+        <form *ngIf="!isLoadingCompanyForEdit && !editCompanyError" [formGroup]="companyForm"
+            (ngSubmit)="onSubmitEdit()">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="companyName" class="form-label">Naziv Kompanije</label>
+                    <input type="text" id="companyName" formControlName="companyName" class="form-control"
+                        [class.is-invalid]="companyForm.get('companyName')?.invalid && companyForm.get('companyName')?.touched">
+                    <div *ngIf="companyForm.get('companyName')?.invalid && companyForm.get('companyName')?.touched"
+                        class="invalid-feedback">
+                        Naziv kompanije je obavezan.
+                    </div>
+                </div>
+                <!-- <div class="col-md-6">
+                    <label for="address" class="form-label">Adresa</label>
+                    <input type="text" id="address" formControlName="address" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="city" class="form-label">Grad</label>
+                    <input type="text" id="city" formControlName="city" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="description" class="form-label">Opis</label>
+                    <textarea id="description" formControlName="description" class="form-control" rows="3"></textarea>
+                </div> -->
+
+                <div class="col-12 mt-4">
+                    <h5>Slike Kompanije</h5>
+                    <div class="existing-images-container row g-2 mb-3">
+                        <div class="col-auto position-relative" *ngFor="let url of existingImageUrls">
+                            <img [src]="url" alt="Postojeća slika" class="img-thumbnail existing-image-thumbnail">
+                            <button type="button" class="btn btn-danger btn-sm remove-image-btn"
+                                (click)="removeExistingImage(url)">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <p *ngIf="existingImageUrls.length === 0 && uploadedFiles.length === 0"
+                            class="text-muted small mt-2">
+                            Nema postojećih slika. Dodajte nove.
+                        </p>
+                    </div>
+
+                    <label for="imageUpload" class="form-label mt-3">Dodaj nove slike</label>
+                    <div class="drag-drop-area" [class.is-dragging]="isDragging" (dragover)="onDragOver($event)"
+                        (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+                        <i class="bi bi-folder-plus icon-folder"></i>
+                        <p>Prevucite slike ovde, ili
+                            <label for="imageUpload" class="browse-link">Pretražite</label>
+                        </p>
+                        <input type="file" id="imageUpload" name="imageUpload" multiple accept="image/*"
+                            (change)="onFileSelected($event)" style="display: none;" />
+                    </div>
+
+                    <div class="uploaded-files-container mt-3">
+                        <div class="uploaded-file-item" *ngFor="let file of uploadedFiles; let i = index">
+                            <img *ngIf="file.url" [src]="file.url" alt="Preview" class="thumbnail" />
+                            <div class="file-details">
+                                <span class="file-name">{{ file.name }}</span>
+                                <span class="file-size">{{ file.size }}</span>
+                            </div>
+                            <button type="button" class="btn-remove-file" (click)="removeUploadedFile(i)">
+                                &times;
+                            </button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="companyForm.touched && existingImageUrls.length === 0 && uploadedFiles.length === 0"
+                        class="alert alert-danger mt-3">
+                        Kompanija mora imati barem jednu sliku.
+                    </div>
+                </div>
+
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-success me-2"
+                        [disabled]="companyForm.invalid && existingImageUrls.length === 0 && uploadedFiles.length === 0">
+                        <i class="bi bi-save"></i> Sačuvaj izmene
+                    </button>
+                    <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+                        <i class="bi bi-x-circle"></i> Odustani
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
