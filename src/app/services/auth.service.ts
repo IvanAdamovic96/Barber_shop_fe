@@ -54,6 +54,24 @@ export class AuthService {
         return this.http.get<any[]>(`${this.authUrl}/get-companies-by-owner-email?Email=${email}`);
     }
 
+    
+
+    /*  */
+    getOwnerDetailsById(ownerId: string): Observable<any> {
+        return this.http.get<any>(`${this.authUrl}/get-owner-details?OwnerId=${ownerId}`);
+    }
+    updateOwnerDetails(formData: FormData): Observable<string> {
+        return this.http.put(`${this.authUrl}/update-owner`, formData, { responseType: 'text' as const });
+    }
+    deleteOwner(ownerId: string): Observable<string> {
+        return this.http.delete(`${this.authUrl}/delete-owner?OwnerId=${ownerId}`, { responseType: 'text' as const });
+    }
+    /*  */
+
+
+
+
+
 
     logout(): void {
         //localStorage.removeItem(this.roleKey);

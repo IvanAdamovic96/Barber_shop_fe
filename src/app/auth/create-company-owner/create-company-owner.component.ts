@@ -37,7 +37,7 @@ export class CreateCompanyOwnerComponent {
     showConfirm('Da li ste sigurni da želite da kreirate vlasnika kompanije sa ovim podacima?', () => {
       this.authService.createCompanyOwner(formData).subscribe({
         next: (response) => {
-          this.owner = response.data
+          this.owner = response
           console.log('Uspešno kreiran vlasnik kompanije:', response);
           showSuccess('Uspešno kreiran vlasnik kompanije');
           //window.location.reload();
@@ -56,7 +56,7 @@ export class CreateCompanyOwnerComponent {
             showError('Greška pri kreiranju vlasnika kompanije: ' + messages.join(', '));
             //alert(messages.join('\n'));
           } else {
-            showError('Greška pri kreiranju vlasnika kompanije.');
+            showError(error.error.message);
             //alert('Greška pri registraciji.');
             console.log(error);
           }

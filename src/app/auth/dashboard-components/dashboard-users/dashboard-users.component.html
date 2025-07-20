@@ -1,1 +1,147 @@
-<p>dashboard-users works!</p>
+<div class="dashboard-companies-container">
+    <div class="d-flex justify-content-between mb-3">
+        <p class="section-title">Lista svih vlasnika.</p>
+        <!-- <a routerLink="/create-company" class="btn btn-primary h-75 align-content-center ">
+            <i class="fa-solid fa-circle-plus me-2"></i> Kreiraj novu kompaniju
+        </a> -->
+    </div>
+
+    <div *ngIf="isLoading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Učitavanje...</span>
+        </div>
+        <p class="mt-3">Učitavanje vlasnika...</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger text-center my-5" role="alert">
+        {{ errorMessage }}
+        <button type="button" class="btn btn-sm btn-outline-danger ms-3" (click)="loadOwners()">Pokušaj
+            ponovo</button>
+    </div>
+
+    <div class="table-responsive bg-white rounded shadow-sm p-4">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Ime</th>
+                    <th scope="col">Prezime</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Telefon</th>
+                    <th scope="col">Akcije</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let owner of owners; let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>
+                        <div>
+                            {{ owner.firstName }}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            {{ owner.lastName }}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            {{ owner.email }}
+                        </div>
+                    </td>
+                    <td class="text-muted small">{{ owner.phoneNumber }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info me-2" (click)="editOwner(owner.ownerId)">
+                            <i class="fa-solid fa-pen-to-square"></i> Izmeni
+                        </button>
+                        <button class="btn btn-sm btn-danger" (click)="deleteOwner(owner.ownerId)">
+                            <i class="fa-solid fa-trash-can"></i> Obriši
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="!isLoading && !errorMessage && owners.length === 0">
+                    <td colspan="5" class="text-center py-4 text-muted">
+                        Nema registrovanih vlasnika.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div *ngIf="isEditing" id="editOwnerForm" class="company-edit-form-section bg-white rounded shadow-sm p-4 mt-4">
+        <h3 class="section-title mb-4">Izmeni vlasnika: {{ selectedOwnerForEdit?.firstName }}</h3>
+
+        <div *ngIf="isLoadingOwnerForEdit" class="text-center my-4">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Učitavanje detalja...</span>
+            </div>
+            <p class="mt-2">Učitavanje detalja vlasnika...</p>
+        </div>
+
+        <div *ngIf="editOwnerError" class="alert alert-danger text-center my-4" role="alert">
+            {{ editOwnerError }}
+            <button type="button" class="btn btn-sm btn-outline-danger ms-3"
+                (click)="editOwner(selectedOwnerForEdit!.companyId)">Pokušaj ponovo</button>
+        </div>
+
+        <form *ngIf="!isLoadingOwnerForEdit && !editOwnerError" [formGroup]="ownerForm"
+            (ngSubmit)="onSubmitEdit()">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="firstName" class="form-label">Ime</label>
+                    <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                        [class.is-invalid]="ownerForm.get('firstName')?.invalid && ownerForm.get('firstName')?.touched">
+                    <div *ngIf="ownerForm.get('firstName')?.invalid && ownerForm.get('firstName')?.touched"
+                        class="invalid-feedback">
+                        Ime je obavezno.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Prezime</label>
+                    <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                        [class.is-invalid]="ownerForm.get('lastName')?.invalid && ownerForm.get('lastName')?.touched">
+                    <div *ngIf="ownerForm.get('lastName')?.invalid && ownerForm.get('lastName')?.touched"
+                        class="invalid-feedback">
+                        Prezime je obavezno.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" id="email" formControlName="email" class="form-control"
+                        [class.is-invalid]="ownerForm.get('email')?.invalid && ownerForm.get('email')?.touched">
+                    <div *ngIf="ownerForm.get('email')?.invalid && ownerForm.get('email')?.touched"
+                        class="invalid-feedback">
+                        Email je obavezan.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="phoneNumber" class="form-label">Telefon</label>
+                    <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control"
+                        [class.is-invalid]="ownerForm.get('phoneNumber')?.invalid && ownerForm.get('phoneNumber')?.touched">
+                    <div *ngIf="ownerForm.get('phoneNumber')?.invalid && ownerForm.get('phoneNumber')?.touched"
+                        class="invalid-feedback">
+                        Telefon je obavezan.
+                    </div>
+                </div>
+
+                <!-- <div class="col-12 mt-4">
+                    <h5>Slike Kompanije</h5>
+                    <div class="existing-images-container row g-2 mb-3">
+                        
+                    </div>
+                </div> -->
+
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-success me-2"
+                        [disabled]="ownerForm.invalid">
+                        <i class="bi bi-save"></i> Sačuvaj izmene
+                    </button>
+                    <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+                        <i class="bi bi-x-circle"></i> Odustani
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

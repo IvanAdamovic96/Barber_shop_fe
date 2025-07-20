@@ -14,7 +14,7 @@ interface DisplayFile {
   file: File;
   name: string;
   size: string;
-  url: string | ArrayBuffer | null; // Base64 URL za prikaz pre uploada
+  url: string | ArrayBuffer | null;
 }
 
 
@@ -306,17 +306,14 @@ export class DashboardCompaniesComponent implements OnInit {
   }
 
 
-  // --- NOVO: Brisanje postojećih slika ---
   removeExistingImage(imageUrl: string): void {
     this.imagesToDelete.push(imageUrl);
     this.existingImageUrls = this.existingImageUrls.filter(url => url !== imageUrl);
   }
 
-  // --- POSTOJEĆE: Brisanje novododatih (uploaded) slika ---
   removeUploadedFile(index: number): void {
     this.uploadedFiles.splice(index, 1);
   }
-
 
   viewCompanyDetails(companyId: string): void {
     this.router.navigate(['/companies', companyId]);
