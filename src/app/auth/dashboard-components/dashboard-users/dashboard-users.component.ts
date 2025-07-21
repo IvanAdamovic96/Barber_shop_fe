@@ -60,10 +60,6 @@ export class DashboardUsersComponent implements OnInit {
   }
 
 
-  deleteOwner(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-
   editOwner(ownerId: string): void {
     this.selectedOwnerForEdit = null;
     this.isEditing = false;
@@ -142,6 +138,27 @@ export class DashboardUsersComponent implements OnInit {
     });
   }
 
+
+  deleteOwner(ownerId: string): void {
+    showConfirm('Da li ste sigurni da želite da obrišete ovog vlasnika?', () => {
+      this.authService.deleteOwner(ownerId).subscribe({
+        next: (response) => {
+          showSuccess(response);
+          this.loadOwners();
+        },
+        error: (error: HttpErrorResponse) => {
+          let errorMessage = 'Došlo je do greške prilikom brisanja vlasnika.';
+          if (error.error?.message) {
+            errorMessage += ' ' + error.error.message;
+          } else if (error.statusText) {
+            errorMessage += ' ' + error.statusText;
+          }
+          showError(errorMessage);
+          console.error('Error deleting owner:', error);
+        }
+      });
+    });
+  }
 
   cancelEdit(): void {
     this.isEditing = false;

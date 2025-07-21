@@ -53,7 +53,7 @@ export class CompaniesComponent implements OnInit {
         console.log(this.companies);
       },
       error: (error: HttpErrorResponse) => {
-        showError('Greška prilikom dohvatanja kompanija. ' + error.error.message);
+        showError('Greška prilikom dohvatanja kompanija.');
         console.error('Greška prilikom dohvatanja kompanija', error.error.message);
       }
     });

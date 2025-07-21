@@ -101,7 +101,6 @@ export class DashboardCompaniesComponent implements OnInit {
           if (this.selectedCompanyForEdit?.companyId === companyId) {
             this.cancelEdit();
           }
-          //this.router.navigate(['/dashboard/companies']);
         },
         error: (error: HttpErrorResponse) => {
           let errorMessage = 'Došlo je do greške prilikom brisanja kompanije.';
@@ -149,7 +148,6 @@ export class DashboardCompaniesComponent implements OnInit {
           description: company.description || '' */
         });
 
-        // Initialize existing image URLs
         this.existingImageUrls = [...company.imageUrl];
 
 
