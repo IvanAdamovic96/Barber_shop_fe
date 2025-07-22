@@ -29,7 +29,10 @@
         <div class="col-12 col-lg-9">
             <div *ngIf="selectedCompanyId" class="card shadow-sm barbers-list-card">
                 <div class="card-header bg-secondary text-white">
-                    <h4 class="card-title mb-0">Frizeri u kompaniji: {{ selectedCompanyName }}</h4>
+                    <h4 class="card-title mb-0">Frizeri u kompaniji:
+                        <a class="card-title" [routerLink]="['/companies/'] + selectedCompanyId">{{ selectedCompanyName
+                            }}</a>
+                    </h4>
                 </div>
                 <div class="card-body">
                     <div *ngIf="isLoadingBarbers" class="text-center py-4">
@@ -82,9 +85,16 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p *ngIf="barbersOfSelectedCompany.length === 0" class="text-muted text-center py-3">
-                            Za izabranu kompaniju nema registrovanih frizera.
-                        </p>
+                        <div *ngIf="barbersOfSelectedCompany.length === 0">
+                            <p class="text-muted text-center py-3">
+                                Za izabranu kompaniju nema registrovanih frizera.
+                            </p>
+                            <p class="text-center">
+                                <a class="btn btn-info" [routerLink]="['/create-barber', selectedCompanyId]">
+                                    <i class="fa-solid fa-user-plus"></i> Dodaj frizera
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,19 +103,92 @@
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Edit form -->
+    <div class="row">
+        <div *ngIf="isEditing" id="editBarberForm"
+            class="company-edit-form-section bg-white rounded shadow-sm p-4 mt-4">
+            <h3 class="section-title mb-4">Izmeni frizera: {{ selectedBarberForEdit?.barberName }}</h3>
 
-<!-- <div class="list-group">
-    <a *ngFor="let company of companies"
-        class="list-group-item list-group-item-action barber-item d-flex justify-content-between align-items-center"
-        (click)="onCompanyClick(company.companyId)" [class.active]="selectedCompanyId === company.companyId">
-        <div>
-            <i class="bi bi-person-badge-fill me-2"></i>
-            <strong>{{ company.barberName }}</strong>
-            <small class="text-muted d-block">Kompanija: {{ company.companyName }}</small>
+            <div *ngIf="isLoadingBarberForEdit" class="text-center my-4">
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="visually-hidden">Učitavanje detalja...</span>
+                </div>
+                <p class="mt-2">Učitavanje detalja frizera...</p>
+            </div>
+
+            <div *ngIf="editBarberError" class="alert alert-danger text-center my-4" role="alert">
+                {{ editBarberError }}
+                <button type="button" class="btn btn-sm btn-outline-danger ms-3"
+                    (click)="editBarber(selectedBarberForEdit!.barberId)">Pokušaj ponovo</button>
+            </div>
+
+            <form *ngIf="!isLoadingBarberForEdit && !editBarberError" [formGroup]="barberForm"
+                (ngSubmit)="onSubmitEdit()">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="barberName" class="form-label">Ime</label>
+                        <input type="text" id="barberName" formControlName="barberName" class="form-control"
+                            [class.is-invalid]="barberForm.get('barberName')?.invalid && barberForm.get('barberName')?.touched">
+                        <div *ngIf="barberForm.get('barberName')?.invalid && barberForm.get('barberName')?.touched"
+                            class="invalid-feedback">
+                            Ime je obavezno.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" formControlName="email" class="form-control"
+                            [class.is-invalid]="barberForm.get('email')?.invalid && barberForm.get('email')?.touched">
+                        <div *ngIf="barberForm.get('email')?.invalid && barberForm.get('email')?.touched"
+                            class="invalid-feedback">
+                            Email je obavezan.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phoneNumber" class="form-label">Telefon</label>
+                        <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control"
+                            [class.is-invalid]="barberForm.get('phoneNumber')?.invalid && barberForm.get('phoneNumber')?.touched">
+                        <div *ngIf="barberForm.get('phoneNumber')?.invalid && barberForm.get('phoneNumber')?.touched"
+                            class="invalid-feedback">
+                            Telefon je obavezan.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="individualStartTime" class="form-label">Početno radno vreme</label>
+                                <input type="time" id="individualStartTime" formControlName="individualStartTime"
+                                    class="form-control"
+                                    [class.is-invalid]="barberForm.get('individualStartTime')?.invalid && barberForm.get('individualStartTime')?.touched">
+                                <div *ngIf="barberForm.get('individualStartTime')?.invalid && barberForm.get('individualStartTime')?.touched"
+                                    class="invalid-feedback">
+                                    Početno radno vreme je obavezno.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="individualEndTime" class="form-label">Završno radno vreme</label>
+                                <input type="time" id="individualEndTime" formControlName="individualEndTime"
+                                    class="form-control"
+                                    [class.is-invalid]="barberForm.get('individualEndTime')?.invalid && barberForm.get('individualEndTime')?.touched">
+                                <div *ngIf="barberForm.get('individualEndTime')?.invalid && barberForm.get('individualEndTime')?.touched"
+                                    class="invalid-feedback">
+                                    Završno radno vreme je obavezno.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 text-center mt-4">
+                        <button type="submit" class="btn btn-success me-2" [disabled]="barberForm.invalid">
+                            <i class="bi bi-save"></i> Sačuvaj izmene
+                        </button>
+                        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+                            <i class="bi bi-x-circle"></i> Odustani
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <i class="bi bi-chevron-right"></i>
-    </a>
-    <p *ngIf="companies?.length === 0" class="text-muted mt-3 text-center">Nema registrovanih kompanija.</p>
-</div> -->
+    </div>
+</div>

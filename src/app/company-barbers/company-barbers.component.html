@@ -73,11 +73,11 @@
       <div class="col-12 col-md-4 text-md-end">
         <a *ngIf="isLoggedIn && isOwner" class="btn btn-info me-2 mt-2 mt-md-0"
           [routerLink]="['/create-barber', companyId]">
-          <i class="bi bi-person-plus-fill me-1"></i> Dodaj frizera
+          <i class="fa-solid fa-user-plus"></i> Dodaj frizera
         </a>
         <a *ngIf="isLoggedIn && isOwner" class="btn btn-success mt-2 mt-md-0"
           [routerLink]="['/create-haircut', companyId]">
-          <i class="bi bi-scissors me-1"></i> Dodaj usluge
+          <i class="fa-solid fa-scissors"></i> Dodaj usluge
         </a>
       </div>
     </div>

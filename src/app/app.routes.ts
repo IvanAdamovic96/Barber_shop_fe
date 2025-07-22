@@ -40,14 +40,14 @@ export const routes: Routes = [
         path: 'dashboard', component: DashboardComponent,
         children: [
             /* { path: '', redirectTo: '', pathMatch: 'full'}, */
-            { path: 'home', component: DashboardHomeComponent, canActivate: [AdminGuard], title: 'Dashboard - Admin' },
-            { path: 'companies', component: DashboardCompaniesComponent, canActivate: [AdminGuard], title: 'Dashboard - Kompanije' },
-            { path: 'users', component: DashboardUsersComponent, canActivate: [AdminGuard], title: 'Dashboard - Korisnici' },
-            { path: 'appointments', component: DashboardAppointmentsComponent, canActivate: [OwnerGuard], title: 'Dashboard - Termini' },
-            { path: 'barbers', component: DashboardBarbersComponent, canActivate: [OwnerGuard], title: 'Dashboard - Frizeri' },
-            { path: 'haircuts', component: DashboardHaircutsComponent, canActivate: [OwnerGuard], title: 'Dashboard - Usluge' },
-            { path: 'barber-appointments', component: DashboardBarberAppointmentsComponent, canActivate: [BarberGuard], title: 'Dashboard - Zakazivanja' },
-            { path: 'reservations', component: DashboardReservationsComponent, title: 'Dashboard - Rezervisani termini' },
+            { path: 'home', component: DashboardHomeComponent, canActivate: [AdminGuard], title: 'Panel - Admin' },
+            { path: 'companies', component: DashboardCompaniesComponent, canActivate: [AdminGuard], title: 'Panel - Kompanije' },
+            { path: 'users', component: DashboardUsersComponent, canActivate: [AdminGuard], title: 'Panel - Korisnici' },
+            { path: 'appointments', component: DashboardAppointmentsComponent, canActivate: [OwnerGuard], title: 'Panel - Termini' },
+            { path: 'barbers', component: DashboardBarbersComponent, canActivate: [OwnerGuard], title: 'Panel - Frizeri' },
+            { path: 'haircuts', component: DashboardHaircutsComponent, canActivate: [OwnerGuard], title: 'Panel - Usluge' },
+            { path: 'barber-appointments', component: DashboardBarberAppointmentsComponent, canActivate: [BarberGuard], title: 'Panel - Zakazivanja' },
+            { path: 'reservations', component: DashboardReservationsComponent, title: 'Panel - Rezervisani termini' },
         ]
     },
     { path: '**', redirectTo: 'home' }

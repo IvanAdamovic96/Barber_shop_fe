@@ -1,1 +1,169 @@
-<p>dashboard-haircuts works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-3 mb-4 mb-lg-0">
+            <div class="card shadow-sm company-list-card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">Kompanije</h4>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <a *ngFor="let company of companies"
+                            class="list-group-item list-group-item-action company-item d-flex justify-content-between align-items-center"
+                            (click)="onCompanyClick(company.companyId)"
+                            [class.active]="selectedCompanyId === company.companyId">
+                            <div>
+                                <i class="fa-solid fa-shop"></i>
+                                <strong> {{ company.companyName }}</strong>
+                                <!-- <small *ngIf="company.address" class="text-muted d-block">{{ company.address }}, {{
+                                    company.city }}</small> -->
+                            </div>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                        <p *ngIf="companies?.length === 0" class="text-muted mt-3 text-center p-3">Nema registrovanih
+                            kompanija.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-9">
+            <div *ngIf="selectedCompanyId" class="card shadow-sm barbers-list-card">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="card-title mb-0">Usluge u kompaniji:
+                        <a class="card-title" [routerLink]="['/companies/'] + selectedCompanyId">{{ selectedCompanyName
+                            }}</a>
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div *ngIf="isLoadingBarbers" class="text-center py-4">
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="visually-hidden">Učitavanje usluga...</span>
+                        </div>
+                        <p class="mt-2">Učitavanje usluga...</p>
+                    </div>
+
+                    <div *ngIf="barbersError" class="alert alert-danger text-center" role="alert">
+                        {{ barbersError }}
+                        <button type="button" class="btn btn-sm btn-outline-danger ms-3"
+                            (click)="loadHaircutsForCompany(selectedCompanyId!)">Pokušaj ponovo</button>
+                    </div>
+
+                    <div *ngIf="!isLoadingBarbers && !barbersError">
+                        <div *ngIf="haircutsOfSelectedCompany.length > 0" class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th class="table-header" scope="col">#</th>
+                                        <th class="table-header" scope="col">Tip usluge</th>
+                                        <th class="table-header" scope="col">Cena</th>
+                                        <th class="table-header" scope="col">Vreme trajanja</th>
+                                        <th class="table-header" scope="col">Akcije</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let haircut of haircutsOfSelectedCompany; let j = index">
+                                        <td>{{ j + 1 }}</td>
+                                        <td>
+                                            <a class="barber-name-link">
+                                                {{ haircut.haircutType }}
+                                            </a>
+                                        </td>
+                                        <td class="text-muted small">{{ haircut.price }}</td>
+                                        <td class="text-muted small">{{ haircut.duration }}</td>
+                                        
+                                        <td>
+                                            <button class="btn btn-sm btn-info me-2"
+                                                (click)="editHaircut(haircut.haircutId)">
+                                                <i class="fa-solid fa-pen-to-square"></i> Izmeni
+                                            </button>
+                                            <button class="btn btn-sm btn-danger"
+                                                (click)="deleteHaircut(haircut.haircutId)">
+                                                <i class="fa-solid fa-trash-can"></i> Obriši
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="haircutsOfSelectedCompany.length === 0">
+                            <p class="text-muted text-center py-3">
+                                Za izabranu kompaniju nema kreiranih usluga.
+                            </p>
+                            <p class="text-center">
+                                <a class="btn btn-info" [routerLink]="['/create-haircut', selectedCompanyId]">
+                                    <i class="fa-solid fa-user-plus"></i> Dodaj uslugu
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!selectedCompanyId" class="alert alert-info text-center shadow-sm" role="alert">
+                Odaberite kompaniju iz liste da biste videli njene usluge.
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit form -->
+    <div class="row">
+        <div *ngIf="isEditing" id="editHaircutForm"
+            class="company-edit-form-section bg-white rounded shadow-sm p-4 mt-4">
+            <h3 class="section-title mb-4">Izmeni uslugu: {{ selectedHaircutForEdit?.barberName }}</h3>
+
+            <div *ngIf="isLoadingHaircutForEdit" class="text-center my-4">
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="visually-hidden">Učitavanje detalja...</span>
+                </div>
+                <p class="mt-2">Učitavanje detalja usluge...</p>
+            </div>
+
+            <div *ngIf="editHaircutError" class="alert alert-danger text-center my-4" role="alert">
+                {{ editHaircutError }}
+                <button type="button" class="btn btn-sm btn-outline-danger ms-3"
+                    (click)="editHaircut(selectedHaircutForEdit!.barberId)">Pokušaj ponovo</button>
+            </div>
+
+            <form *ngIf="!isLoadingHaircutForEdit && !editHaircutError" [formGroup]="haircutForm"
+                (ngSubmit)="onSubmitEdit()">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="haircutType" class="form-label">Ime</label>
+                        <input type="text" id="haircutType" formControlName="haircutType" class="form-control"
+                            [class.is-invalid]="haircutForm.get('haircutType')?.invalid && haircutForm.get('haircutType')?.touched">
+                        <div *ngIf="haircutForm.get('haircutType')?.invalid && haircutForm.get('haircutType')?.touched"
+                            class="invalid-feedback">
+                            Tip usluge je obavezan.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="duration" class="form-label">Email</label>
+                        <input type="number" id="duration" formControlName="duration" class="form-control"
+                            [class.is-invalid]="haircutForm.get('duration')?.invalid && haircutForm.get('duration')?.touched">
+                        <div *ngIf="haircutForm.get('duration')?.invalid && haircutForm.get('duration')?.touched"
+                            class="invalid-feedback">
+                            Vreme trajanja je obavezno.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="price" class="form-label">Telefon</label>
+                        <input type="number" id="price" formControlName="price" class="form-control"
+                            [class.is-invalid]="haircutForm.get('price')?.invalid && haircutForm.get('price')?.touched">
+                        <div *ngIf="haircutForm.get('price')?.invalid && haircutForm.get('price')?.touched"
+                            class="invalid-feedback">
+                            Cena je obavezna.
+                        </div>
+                    </div>   
+
+                    <div class="col-12 text-center mt-4">
+                        <button type="submit" class="btn btn-success me-2" [disabled]="haircutForm.invalid">
+                            <i class="bi bi-save"></i> Sačuvaj izmene
+                        </button>
+                        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+                            <i class="bi bi-x-circle"></i> Odustani
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

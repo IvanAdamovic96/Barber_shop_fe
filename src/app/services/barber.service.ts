@@ -40,6 +40,10 @@ export class BarberService {
     return this.http.get<any>(`${this.companyUrl}/get-all-haircuts-by-companyid?CompanyId=${id}`);
   }
 
+  getHaircutDetailsById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.companyUrl}/get-haircut-details-by-id?HaircutId=${id}`);
+  }
+
   createBarber(formData: any): Observable<any> {
     return this.http.post<any>(`${this.barberUrl}/create`, formData)
   }
@@ -51,16 +55,26 @@ export class BarberService {
     return this.http.get<any>(`${this.scheduleUrl}/GetAllFreeAppointments?selectedDate=${encodedDate}&barberId=${barberId}`)
   }
 
+  getBarberDetailsByBarberId(barberId: string): Observable<any> {
+    return this.http.get<any>(`${this.barberUrl}/get-barber-details-by-barber-id?BarberId=${barberId}`);
+  }
+
+  updateBarberDetails(formData: FormData): Observable<string> {
+    return this.http.put(`${this.barberUrl}/update-barber-details`, formData, { responseType: 'text' as const });
+  }
+
+  deleteBarber(barberId: string): Observable<string> {
+    return this.http.delete(`${this.barberUrl}/delete-barber?BarberId=${barberId}`, { responseType: 'text' as const });
+  }
+
   createSchedule(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.scheduleUrl}/CreateAppointment`, formData)
   }
-
 
   deleteCompany(companyId: string): Observable<string> {
     return this.http.delete(`${this.companyUrl}/delete-company?CompanyId=${companyId}`, { responseType: 'text' as const });
   }
 
-  //srediti
   updateCompany(formData: FormData): Observable<string> {
     return this.http.put(`${this.companyUrl}/update-company`, formData, { responseType: 'text' as const });
   }
