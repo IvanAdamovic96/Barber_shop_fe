@@ -41,8 +41,8 @@ export class AddHaircutComponent implements OnInit {
 
     this.barberService.createHaircut(formData).subscribe({
       next: (response) => {
+        showSuccess(response);
         this.router.navigate(['/companies', this.companyId]);
-        showSuccess('Usluga uspješno kreirana!');
         this.haircutType = '';
         this.price = 0;
         this.duration = 0;

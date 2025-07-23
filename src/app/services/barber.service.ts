@@ -32,10 +32,11 @@ export class BarberService {
     return this.http.get<any>(`${this.companyUrl}/getCompanyDetailsById?CompanyId=${id}`);
   }
 
-  createHaircut(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.companyUrl}/create-haircut`, formData);
+  createHaircut(formData: FormData): Observable<string> {
+    return this.http.post(`${this.companyUrl}/create-haircut`, formData, { responseType: 'text' as const });
   }
 
+  /* Haircuts */
   getAllHaircutsByCompanyId(id: string): Observable<any> {
     return this.http.get<any>(`${this.companyUrl}/get-all-haircuts-by-companyid?CompanyId=${id}`);
   }
@@ -43,6 +44,16 @@ export class BarberService {
   getHaircutDetailsById(id: string): Observable<any> {
     return this.http.get<any>(`${this.companyUrl}/get-haircut-details-by-id?HaircutId=${id}`);
   }
+
+  updateHaircutDetails(formData: FormData): Observable<string> {
+    return this.http.put(`${this.companyUrl}/update-haircut`, formData, { responseType: 'text' as const });
+  }
+
+  deleteHaircut(haircutId: string): Observable<string> {
+    return this.http.delete(`${this.companyUrl}/delete-haircut?HaircutId=${haircutId}`, { responseType: 'text' as const });
+  }
+  /* ----- */
+
 
   createBarber(formData: any): Observable<any> {
     return this.http.post<any>(`${this.barberUrl}/create`, formData)

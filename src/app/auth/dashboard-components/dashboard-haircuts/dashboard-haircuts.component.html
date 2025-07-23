@@ -136,7 +136,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="duration" class="form-label">Email</label>
+                        <label for="duration" class="form-label">Vreme trajanja</label>
                         <input type="number" id="duration" formControlName="duration" class="form-control"
                             [class.is-invalid]="haircutForm.get('duration')?.invalid && haircutForm.get('duration')?.touched">
                         <div *ngIf="haircutForm.get('duration')?.invalid && haircutForm.get('duration')?.touched"
@@ -145,7 +145,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="price" class="form-label">Telefon</label>
+                        <label for="price" class="form-label">Cena</label>
                         <input type="number" id="price" formControlName="price" class="form-control"
                             [class.is-invalid]="haircutForm.get('price')?.invalid && haircutForm.get('price')?.touched">
                         <div *ngIf="haircutForm.get('price')?.invalid && haircutForm.get('price')?.touched"

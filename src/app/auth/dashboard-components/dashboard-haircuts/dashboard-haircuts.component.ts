@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../../services/auth.service';
 import { BarberService } from '../../../services/barber.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { showError } from '../../../../utils';
+import { showConfirm, showError, showSuccess } from '../../../../utils';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -91,11 +91,6 @@ export class DashboardHaircutsComponent implements OnInit {
     })
   }
 
-  
-  deleteHaircut(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-
   editHaircut(haircutId: string): void {
     this.selectedHaircutForEdit = null;
     this.isEditing = false;
@@ -134,8 +129,68 @@ export class DashboardHaircutsComponent implements OnInit {
 
 
   onSubmitEdit() {
-    //ovo uraditi !!!!
+    if (!this.selectedHaircutForEdit) {
+      showError('Nije izabrana usluga za izmenu.');
+      return;
+    }
+    if (this.haircutForm.invalid) {
+      showError('Molimo popunite sva obavezna polja.');
+      this.haircutForm.markAllAsTouched();
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('HaircutResponseDto.HaircutId', this.selectedHaircutForEdit.haircutId);
+    formData.append('HaircutResponseDto.HaircutType', this.haircutForm.get('haircutType')?.value || '');
+    formData.append('HaircutResponseDto.Price', this.haircutForm.get('price')?.value || '');
+    formData.append('HaircutResponseDto.Duration', this.haircutForm.get('duration')?.value || '');
+    formData.append('HaircutResponseDto.CompanyId', this.selectedCompanyId || '');
+
+    //console.log('Submitting form data:', ...formData.entries());
+
+    showConfirm('Da li ste sigurni da želite da sačuvate izmene?', () => {
+      this.barberService.updateHaircutDetails(formData).subscribe({
+        next: (response) => {
+          showSuccess(response);
+          this.loadHaircutsForCompany(this.selectedCompanyId!);
+          this.cancelEdit();
+        },
+        error: (error: HttpErrorResponse) => {
+          let errorMessage = 'Došlo je do greške prilikom izmene usluge.';
+          if (error.error?.message) {
+            errorMessage += ' ' + error.error.message;
+          } else if (error.statusText) {
+            errorMessage += ' ' + error.statusText;
+          }
+          showError(error.error.message);
+          console.error('Error updating haircut:', error);
+        }
+      });
+    });
   }
+
+
+  deleteHaircut(haircutId: string) {
+    showConfirm('Da li ste sigurni da želite da obrišete ovu uslugu?', () => {
+      this.barberService.deleteHaircut(haircutId).subscribe({
+        next: (response) => {
+          showSuccess(response);
+          this.loadHaircutsForCompany(this.selectedCompanyId!);
+        },
+        error: (error: HttpErrorResponse) => {
+          let errorMessage = 'Došlo je do greške prilikom brisanja usluge.';
+          if (error.error?.message) {
+            errorMessage += ' ' + error.error.message;
+          } else if (error.statusText) {
+            errorMessage += ' ' + error.statusText;
+          }
+          showError(error.error.message);
+          console.error('Error deleting haircut:', error);
+        }
+      });
+    })
+  }
+
 
   cancelEdit(): void {
     this.isEditing = false;
