@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* stilovi za angular-calendar */
+@import '../node_modules/angular-calendar/css/angular-calendar.css';
+/* @import 'angular-calendar/css/angular-calendar.min.css'; */
+
+
+
 html,
 /* body {
     

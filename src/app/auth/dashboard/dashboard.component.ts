@@ -27,10 +27,10 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/dashboard/home']);
       } else if (this.isOwner) {
         this.router.navigate(['/dashboard/barbers']);
-      } else if (this.isRegisteredUser) {
-        this.router.navigate(['/dashboard/reservations']);
       } else if (this.isBarber) {
         this.router.navigate(['/dashboard/barber-appointments']);
+      } else if (this.isRegisteredUser) {
+        this.router.navigate(['/dashboard/reservations']);
       } else {
         this.router.navigate(['/dashboard/home']);
       }

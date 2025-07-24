@@ -66,6 +66,10 @@ export class BarberService {
     return this.http.get<any>(`${this.scheduleUrl}/GetAllFreeAppointments?selectedDate=${encodedDate}&barberId=${barberId}`)
   }
 
+  getAllUsedAppointmentsByBarberId(barberId: string): Observable<any> {
+    return this.http.get<any>(`${this.scheduleUrl}/GetAllUsedAppointments?BarberId=${barberId}`)
+  }
+
   getBarberDetailsByBarberId(barberId: string): Observable<any> {
     return this.http.get<any>(`${this.barberUrl}/get-barber-details-by-barber-id?BarberId=${barberId}`);
   }

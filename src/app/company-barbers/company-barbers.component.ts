@@ -200,6 +200,32 @@ export class CompanyBarbersComponent implements OnInit {
 
 
   onSubmit(): void {
+
+    if (this.isLoggedIn === false) {
+      showError("Morate biti prijavljeni da biste zakazali termin.");
+      return;
+    }
+
+    if (!this.selectedAppointment) {
+      showError("Morate izabrati termin pre zakazivanja.");
+      return;
+    }
+    if (!this.selectedHaircut) {
+      showError("Morate izabrati uslugu pre zakazivanja.");
+      return;
+    }
+
+    this.firstName = this.authService.getFirstName();
+    this.lastName = this.authService.getLastName();
+    this.email = this.authService.getEmail();
+    this.phoneNumber = this.authService.getPhoneNumber();
+
+    if (!this.firstName || !this.lastName || !this.email || !this.phoneNumber) {
+      showError("Niste ulogovani ili su vaši podaci nepotpuni.");
+      return;
+    }
+
+
     const formData = new FormData();
 
     let selectedDateTime: Date;
@@ -220,18 +246,20 @@ export class CompanyBarbersComponent implements OnInit {
       formData.append('Schedule.barberId', this.selectedBarberId);
     }
 
-    this.barberService.createSchedule(formData).subscribe({
-      next: (response) => {
-        console.log('Uspešno zakazano:', response);
-        this.router.navigate(['/dashboard']);
 
-      },
-      error: (error: HttpErrorResponse) => {
-        showError('Greška prilikom zakazivanja: ' + error.error.message);
-        console.error('Greška prilikom zakazivanja:', error.error.message);
-      }
-    });
-
+    showConfirm('Da li ste sigurni da želite zakazati ovaj termin?', () => {
+      this.barberService.createSchedule(formData).subscribe({
+        next: (response) => {
+          console.log('Uspešno zakazano:', response);
+          showSuccess(response.message || 'Termin uspešno zakazan!');
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error: HttpErrorResponse) => {
+          showError('Greška prilikom zakazivanja: ' + error.error.message);
+          console.error('Greška prilikom zakazivanja:', error.error.message);
+        }
+      });
+    })
   }
 
 

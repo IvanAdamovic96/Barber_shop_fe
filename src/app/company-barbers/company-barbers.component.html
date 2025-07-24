@@ -140,11 +140,11 @@
       </div>
     </ng-template>
 
-    <div class="booking-form-container mt-5 p-4 bg-light rounded shadow-sm">
-      <h4 class="mb-4 text-center">Popunite detalje za termin</h4>
+    <div class="mt-5 p-4 rounded ">
+      <!-- <h4 class="mb-4 text-center">Popunite detalje za termin</h4> -->
       <form (ngSubmit)="onSubmit()" #companyForm="ngForm" enctype="multipart/form-data">
         <div class="row gy-4">
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <label for="firstName" class="form-label">Ime</label>
             <input class="form-control" type="text" id="firstName" name="firstName" placeholder="Vaše ime"
               [(ngModel)]="firstName" required>
@@ -163,10 +163,10 @@
             <label for="phoneNumber" class="form-label">Broj telefona</label>
             <input class="form-control" type="tel" id="phoneNumber" name="phoneNumber" placeholder="Broj telefona"
               [(ngModel)]="phoneNumber" required>
-          </div>
+          </div> -->
           <div class="col-md-12">
             <h5 class="mt-4 mb-3">Odaberite uslugu</h5>
-            <div class="packages-container services-list-container">
+            <div class="packages-container bg-light services-list-container">
               <label *ngFor="let haircut of haircuts" class="package-item card mb-2 p-3">
                 <input type="radio" name="selectedHaircut" [value]="haircut.haircutId"
                   [checked]="selectedHaircut === haircut.haircutId" (change)="onHaircutChange(haircut.haircutId)"

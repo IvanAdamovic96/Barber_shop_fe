@@ -9,7 +9,12 @@ export class AuthService {
     private authUrl = 'http://localhost:5045/auth';
     private roleKey = 'user_role';
     private user_email = 'user_email';
+    private user_id = 'user_id';
+    private user_firstName = 'user_firstName';
+    private user_lastName = 'user_lastName';
+    private user_phoneNumber = 'user_phoneNumber';
     private owner_company_id = 'owner_company_id';
+    private barber_id = 'barber_id';
     private loggedIn = new BehaviorSubject<boolean>(this.checkStorage())
     isLoggedin$ = this.loggedIn.asObservable()
 
@@ -24,6 +29,13 @@ export class AuthService {
                 if (response && response.role) {
                     localStorage.setItem(this.roleKey, response.role);
                     localStorage.setItem(this.user_email, response.email);
+                    localStorage.setItem(this.user_id, response.userId);
+                    localStorage.setItem(this.user_firstName, response.firstName);
+                    localStorage.setItem(this.user_lastName, response.lastName);
+                    localStorage.setItem(this.user_phoneNumber, response.phoneNumber);
+                    if (response.barberId) {
+                        localStorage.setItem(this.barber_id, response.barberId);
+                    }
                     this.loggedIn.next(true)
                 }
             })
@@ -85,6 +97,21 @@ export class AuthService {
     
     getEmail(): string {
         return localStorage.getItem(this.user_email) ?? '';
+    }
+    getUserId(): string {
+        return localStorage.getItem(this.user_id) ?? '';
+    }
+    getFirstName(): string {
+        return localStorage.getItem(this.user_firstName) ?? '';
+    }
+    getLastName(): string {
+        return localStorage.getItem(this.user_lastName) ?? '';
+    }
+    getPhoneNumber(): string {
+        return localStorage.getItem(this.user_phoneNumber) ?? '';
+    }
+    getBarberId(): string {
+        return localStorage.getItem(this.barber_id) ?? '';
     }
 
     isAdmin(): boolean {

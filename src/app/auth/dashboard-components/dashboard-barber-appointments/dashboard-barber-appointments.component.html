@@ -1,1 +1,111 @@
-<p>dashboard-barber-appointments works!</p>
+<div class="reservations-container">
+    <h2 class="section-title">Kalendar Barberskih Termina</h2>
+    <hr>
+
+    <div class="calendar-controls mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <div class="btn-group">
+                <button class="btn btn-primary" (click)="setView(CalendarView.Month)"
+                    [class.active]="view === CalendarView.Month">Mesec</button>
+                <button class="btn btn-primary" (click)="setView(CalendarView.Week)"
+                    [class.active]="view === CalendarView.Week">Nedelja</button>
+                <button class="btn btn-primary" (click)="setView(CalendarView.Day)"
+                    [class.active]="view === CalendarView.Day">Dan</button>
+            </div>
+        </div>
+        <div class="date-navigation d-flex align-items-center">
+            <button class="btn btn-outline-secondary me-2" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="view"
+                (viewDateChange)="viewDateChanged($event)">
+                <i class="bi bi-chevron-left"></i> Prethodni
+            </button>
+            <h3 class="mb-0 text-center mx-3">
+                {{ viewDate | calendarDate: (view + 'ViewTitle'):'sr' }}
+            </h3>
+            <button class="btn btn-outline-secondary ms-2" mwlCalendarNextView [(viewDate)]="viewDate" [view]="view"
+                (viewDateChange)="viewDateChanged($event)">
+                Sledeći <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+        <div>
+            <button class="btn btn-info" (click)="goToToday()">Danas</button>
+        </div>
+    </div>
+
+    <div [ngSwitch]="view" class="calendar-display">
+        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+            (eventClick)="handleEventWrapper($event)" (dayClicked)="viewDateChanged($event.day.date)" [weekStartsOn]="1"
+            [locale]="'sr'">
+        </mwl-calendar-month-view>
+
+        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+            (eventClick)="handleEventWrapper($event)" [weekStartsOn]="1" [locale]="'sr'" [hourSegments]="2"
+            [dayStartHour]="8" [dayEndHour]="20">
+        </mwl-calendar-week-view>
+
+        <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
+            (eventClick)="handleEventWrapper($event)" [locale]="'sr'" [hourSegments]="2" [dayStartHour]="8"
+            [dayEndHour]="20">
+        </mwl-calendar-day-view>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="reservations-container">
+    <h2 class="section-title">Kalendar rezervacija</h2>
+    <hr>
+
+    <div class="calendar-controls mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <div class="btn-group">
+                <button class="btn btn-primary" (click)="setView(CalendarView.Month)"
+                    [class.active]="view === CalendarView.Month">Mesec</button>
+                <button class="btn btn-primary" (click)="setView(CalendarView.Week)"
+                    [class.active]="view === CalendarView.Week">Nedelja</button>
+                <button class="btn btn-primary" (click)="setView(CalendarView.Day)"
+                    [class.active]="view === CalendarView.Day">Dan</button>
+            </div>
+        </div>
+        <div class="date-navigation d-flex align-items-center">
+            <button class="btn btn-outline-secondary me-2" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="view"
+                (viewDateChange)="viewDateChanged($event)">
+                <i class="bi bi-chevron-left"></i> Prethodni
+            </button>
+            <h3 class="mb-0 text-center mx-3">{{ viewDate | calendarDate: view:'sr' }}</h3>
+            <button class="btn btn-outline-secondary ms-2" mwlCalendarNextView [(viewDate)]="viewDate" [view]="view"
+                (viewDateChange)="viewDateChanged($event)">
+                Sledeći <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+        <div>
+            <button class="btn btn-info" (click)="loadReservations()">Danas</button>
+        </div>
+    </div>
+    <div [ngSwitch]="view" class="calendar-display">
+        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+            (eventClick)="handleEventWrapper($event)"
+            (dayClicked)="viewDateChanged($event.day.date)"
+            [weekStartsOn]="1" [locale]="'sr'">
+        </mwl-calendar-month-view>
+
+        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+            (eventClick)="handleEventWrapper($event)"
+            [weekStartsOn]="1" [locale]="'sr'" [hourSegments]="2"
+            [dayStartHour]="8" [dayEndHour]="20">
+        </mwl-calendar-week-view>
+
+        <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
+            (eventClick)="handleEventWrapper($event)"
+            [locale]="'sr'" [hourSegments]="2" [dayStartHour]="8"
+            [dayEndHour]="20">
+        </mwl-calendar-day-view>
+    </div>
+</div> -->
