@@ -1,0 +1,45 @@
+section {
+    padding: 80px 0;
+}
+
+section h2 {
+    font-size: 2.8rem;
+    margin-bottom: 40px;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card i {
+    color: #007bff;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+#short-about {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+#book-now {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://via.placeholder.com/1920x400/555555/FFFFFF?text=Book+Now') no-repeat center center/cover;
+}
+
+.btn-success.custom-btn-hero {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success.custom-btn-hero:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}

@@ -84,6 +84,17 @@ mwl-calendar-day-view {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
+
+
+.cal-event-actions {
+    margin-top: 5px;
+}
+
+.cal-event-actions button {
+    margin-right: 5px;
+}
+
+
 /* Stilovi za dugmad i Bootstrap integraciju */
 .btn-primary {
     background-color: #007bff;

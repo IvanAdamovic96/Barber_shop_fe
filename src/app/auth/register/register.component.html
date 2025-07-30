@@ -41,17 +41,26 @@
       </div>
 
       <label for="password">Lozinka:</label>
-      <div class="mb-3">
+      <div class="mb-3 input-group">
         <input type="password" id="password" name="password" class="form-control" [(ngModel)]="password"
-          placeholder="Unesite lozinku" required />
+          placeholder="*******" required />
+        <span class="input-group-text" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus"
+          data-bs-placement="right" data-bs-html="true" title="Zahtevi za lozinku" data-bs-content="
+          <ul style='padding-left: 16px; margin: 0;'>
+            <li>Najmanje 6 karaktera</li>
+            <li>Jedno veliko slovo</li>
+            <li>Barem jedan broj</li>
+            <li>Specijalni karakter (!@#$...)</li>
+          </ul>">
+          <i class="fa-solid fa-circle-info"></i>
+        </span>
       </div>
 
       <label for="confirmPassword">Potvrdi lozinku:</label>
       <div class="mb-3">
-        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="*******"
           [(ngModel)]="confirmPassword" required />
       </div>
-
 
       <div class="text-center">
         <button type="submit" class="btn btn-success px-5">Registruj se</button>

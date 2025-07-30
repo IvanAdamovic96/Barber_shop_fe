@@ -15,9 +15,9 @@ import { showError, showSuccess } from '../../../utils';
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  
 
-  constructor(private authService: AuthService,private router: Router, private toastr: ToastrService) { }
+
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) { }
 
 
 
@@ -37,24 +37,32 @@ export class LoginComponent {
         this.authService.setOwnerCompanyId(response.companyIds);
 
         console.log('Login successful:', response);
-        
+
       },
       error: (error: HttpErrorResponse) => {
-        if (error.status === 400 && error.error?.errors) {
-          const validationErrors = error.error.errors;
-          const messages: string[] = [];
-
-          for (const field in validationErrors) {
-            if (validationErrors.hasOwnProperty(field)) {
-              messages.push(...validationErrors[field]);
+        if (error.status === 400) {
+          if (error.error?.errors) {
+            const validationErrors = error.error.errors;
+            const messages: string[] = [];
+            for (const field in validationErrors) {
+              if (validationErrors.hasOwnProperty(field)) {
+                messages.push(...validationErrors[field]);
+              }
             }
+            showError(messages.join('\n'));
           }
-          showError(messages.join('\n'));
-          //alert(messages.join('\n'));
-        } else if (error.status === 500) {
-          showError('Greška pri prijavi. ' + error.error.message);
-          //alert(error.error.message);
-          console.log(error.error.message);
+          else if (error.error?.detail) {
+            showError(error.error.detail);
+          } else {
+            showError('Greška pri prijavi. Podaci nisu validni.');
+          }
+        }
+        else if (error.status === 500) {
+          console.error('Server error:', error.error?.message || error.message);
+          showError('Greška na serveru. Pokušajte ponovo kasnije.');
+        }
+        else {
+          showError('Neočekivana greška. Status: ' + error.status);
         }
       }
     });

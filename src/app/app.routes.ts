@@ -22,6 +22,7 @@ import { ContactComponent } from './contact/contact.component';
 import { DashboardReservationsComponent } from './auth/dashboard-components/dashboard-reservations/dashboard-reservations.component';
 import { DashboardBarberAppointmentsComponent } from './auth/dashboard-components/dashboard-barber-appointments/dashboard-barber-appointments.component';
 import { BarberGuard } from './auth/guards/barber-guard';
+import { DashboardAppointmentsManagementComponent } from './auth/dashboard-components/dashboard-appointments-management/dashboard-appointments-management.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -47,6 +48,7 @@ export const routes: Routes = [
             { path: 'barbers', component: DashboardBarbersComponent, canActivate: [OwnerGuard], title: 'Panel - Frizeri' },
             { path: 'haircuts', component: DashboardHaircutsComponent, canActivate: [OwnerGuard], title: 'Panel - Usluge' },
             { path: 'barber-appointments', component: DashboardBarberAppointmentsComponent, canActivate: [BarberGuard], title: 'Panel - Zakazivanja' },
+            { path: 'barber-management', component: DashboardAppointmentsManagementComponent, canActivate: [BarberGuard], title: 'Panel - Menadžment' },
             { path: 'reservations', component: DashboardReservationsComponent, title: 'Panel - Rezervisani termini' },
         ]
     },

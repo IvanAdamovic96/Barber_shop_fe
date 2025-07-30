@@ -91,7 +91,7 @@
                             </p>
                             <p class="text-center">
                                 <a class="btn btn-info" [routerLink]="['/create-haircut', selectedCompanyId]">
-                                    <i class="fa-solid fa-user-plus"></i> Dodaj uslugu
+                                    <i class="fa-solid fa-circle-plus"></i> Dodaj uslugu
                                 </a>
                             </p>
                         </div>
@@ -156,10 +156,10 @@
 
                     <div class="col-12 text-center mt-4">
                         <button type="submit" class="btn btn-success me-2" [disabled]="haircutForm.invalid">
-                            <i class="bi bi-save"></i> Sačuvaj izmene
+                            <i class="fa-solid fa-check"></i> Sačuvaj izmene
                         </button>
                         <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
-                            <i class="bi bi-x-circle"></i> Odustani
+                            <i class="fa-solid fa-xmark"></i> Odustani
                         </button>
                     </div>
                 </div>

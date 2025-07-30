@@ -16,7 +16,7 @@
         *ngFor="let company of filteredCompaniesByOwnerId.length ? filteredCompaniesByOwnerId : companies">
         <div class="company-card">
 
-          <!-- Slika kompanije (prva ako postoji) -->
+          <!-- Slika kompanije -->
           <img *ngIf="company.imageUrl && company.imageUrl.length"
             [src]="company.imageUrl[company.currentImageIndex || 0]" alt="{{ company.companyName }}"
             class="img-fluid rounded mb-2 w-100" style="height: 200px; object-fit: cover;"

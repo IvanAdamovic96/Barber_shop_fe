@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { showError } from '../../../utils';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-register',
@@ -11,7 +13,7 @@ import { showError } from '../../../utils';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
+export class RegisterComponent implements AfterViewInit {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
@@ -21,6 +23,12 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService, private router: Router) {
 
+  }
+  ngAfterViewInit(): void {
+    const popoverTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.forEach((popoverTriggerEl) => {
+      new bootstrap.Popover(popoverTriggerEl);
+    });
   }
   onSubmit(): void {
     const formData = new FormData();

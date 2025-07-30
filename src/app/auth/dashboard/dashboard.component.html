@@ -51,7 +51,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" routerLink="/dashboard/barber-appointments" routerLinkActive="active"
                             [routerLinkActiveOptions]="{ exact: true }">
-                            <i class="bi bi-house-door-fill"></i> Appointments
+                            <i class="bi bi-house-door-fill"></i> Kalendar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" routerLink="/dashboard/barber-management" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="bi bi-house-door-fill"></i> Menadžment
                         </a>
                     </li>
                 </div>
@@ -74,7 +80,6 @@
             </ul>
         </div>
         <div class="col p-4">
-            <!-- Ovde komponente uslovno renderovane klikom na linkove iznad -->
             <router-outlet></router-outlet>
         </div>
     </div>

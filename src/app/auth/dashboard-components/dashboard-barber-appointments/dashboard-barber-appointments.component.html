@@ -1,9 +1,9 @@
 <div class="reservations-container">
-    <h2 class="section-title">Kalendar Barberskih Termina</h2>
+    <h2 class="section-title">Kalendar zakazanih termina</h2>
     <hr>
 
-    <div class="calendar-controls mb-4 d-flex justify-content-between align-items-center">
-        <div>
+    <div class="calendar-controls mb-4 d-flex justify-content-between">
+        <div class="ms-1">
             <div class="btn-group">
                 <button class="btn btn-primary" (click)="setView(CalendarView.Month)"
                     [class.active]="view === CalendarView.Month">Mesec</button>
@@ -14,98 +14,101 @@
             </div>
         </div>
         <div class="date-navigation d-flex align-items-center">
-            <button class="btn btn-outline-secondary me-2" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="view"
-                (viewDateChange)="viewDateChanged($event)">
-                <i class="bi bi-chevron-left"></i> Prethodni
-            </button>
             <h3 class="mb-0 text-center mx-3">
                 {{ viewDate | calendarDate: (view + 'ViewTitle'):'sr' }}
             </h3>
-            <button class="btn btn-outline-secondary ms-2" mwlCalendarNextView [(viewDate)]="viewDate" [view]="view"
-                (viewDateChange)="viewDateChanged($event)">
-                Sledeći <i class="bi bi-chevron-right"></i>
-            </button>
         </div>
-        <div>
-            <button class="btn btn-info" (click)="goToToday()">Danas</button>
+        <div class="me-1 btn-group">
+            <button class="btn btn-primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="view"
+                (viewDateChange)="viewDateChanged($event)">
+                <i class="fa fa-arrow-left"></i> Prethodni
+            </button>
+            <button class="btn btn-outline-secondary" (click)="goToToday()">Danas</button>
+            <button class="btn btn-primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="view"
+                (viewDateChange)="viewDateChanged($event)">
+                Sledeći <i class="fa fa-arrow-right"></i>
+            </button>
         </div>
     </div>
 
     <div [ngSwitch]="view" class="calendar-display">
         <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
-            (eventClick)="handleEventWrapper($event)" (dayClicked)="viewDateChanged($event.day.date)" [weekStartsOn]="1"
+            (eventClick)="handleEventWrapper($event)" (dayClicked)="dayClickedInMonthView($event)" [weekStartsOn]="1"
             [locale]="'sr'">
         </mwl-calendar-month-view>
 
         <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
-            (eventClick)="handleEventWrapper($event)" [weekStartsOn]="1" [locale]="'sr'" [hourSegments]="2"
-            [dayStartHour]="8" [dayEndHour]="20">
+            (dayHeaderClicked)="dayClickedInWeekView($event.day.date)" [weekStartsOn]="1" [locale]="'sr'" [hourSegments]="2"
+            [dayStartHour]="8" [dayEndHour]="20" (eventClicked)="deleteAppointment(($event.event.id ?? '').toString())">
         </mwl-calendar-week-view>
 
         <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
             (eventClick)="handleEventWrapper($event)" [locale]="'sr'" [hourSegments]="2" [dayStartHour]="8"
-            [dayEndHour]="20">
+            [dayEndHour]="20" (eventClicked)="deleteAppointment(($event.event.id ?? '').toString())">
         </mwl-calendar-day-view>
     </div>
+    <!-- <ng-template #eventTemplate let-event="event">
+        <div class="d-flex justify-content-between align-items-center">
+            <span>{{ event?.title }}</span>
+            <button class="btn btn-sm btn-danger ms-2" (click)="deleteAppointment((event?.id).toString())"
+                title="Obriši termin">
+                <i class="fa fa-trash"></i>
+            </button>
+        </div>
+    </ng-template> -->
+
 </div>
 
+<pre> {{ events | json}}</pre>
+
+
+<!-- <dialog #dialog>
+    <div>
+        Your country:
+        <select>
+            <option value="default">Choose…</option>
+            <option>United States</option>
+            <option>France</option>
+            <option>Australia</option>
+        </select>
+    </div>
+    <div>
+        <button (click)="dialog.close()">OK</button>
+    </div>
+</dialog>
+
+<button (click)="dialog.showModal()">Show dialog</button> -->
 
 
 
+<!-- <ng-template #eventTemplate let-event="event">
+    <div class="custom-event">
+        <div *ngIf="event">
+            {{ event.title }}
+        </div>
+        <button class="btn btn-sm btn-danger" (click)="deleteAppointment(event.id)">Obriši</button>
+    </div>
+</ng-template> -->
 
 
-
-
-
-
-
-<!-- <div class="reservations-container">
-    <h2 class="section-title">Kalendar rezervacija</h2>
-    <hr>
-
-    <div class="calendar-controls mb-4 d-flex justify-content-between align-items-center">
-        <div>
-            <div class="btn-group">
-                <button class="btn btn-primary" (click)="setView(CalendarView.Month)"
-                    [class.active]="view === CalendarView.Month">Mesec</button>
-                <button class="btn btn-primary" (click)="setView(CalendarView.Week)"
-                    [class.active]="view === CalendarView.Week">Nedelja</button>
-                <button class="btn btn-primary" (click)="setView(CalendarView.Day)"
-                    [class.active]="view === CalendarView.Day">Dan</button>
+<!-- 
+<div #deleteModal class="modal fade" id="deleteAppointmentModal" tabindex="-1" aria-labelledby="deleteAppointmentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAppointmentModalLabel">Potvrda Brisanja Termina</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Da li ste sigurni da želite da obrišete termin: <strong>{{ selectedEvent?.title }}</strong>
+                <br>
+                Zakazan za: <strong>{{ selectedEvent?.start | date:'medium' }}</strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Otkaži</button>
+                <button type="button" class="btn btn-danger" (click)="confirmDeleteAppointment()">Obriši</button>
             </div>
         </div>
-        <div class="date-navigation d-flex align-items-center">
-            <button class="btn btn-outline-secondary me-2" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="view"
-                (viewDateChange)="viewDateChanged($event)">
-                <i class="bi bi-chevron-left"></i> Prethodni
-            </button>
-            <h3 class="mb-0 text-center mx-3">{{ viewDate | calendarDate: view:'sr' }}</h3>
-            <button class="btn btn-outline-secondary ms-2" mwlCalendarNextView [(viewDate)]="viewDate" [view]="view"
-                (viewDateChange)="viewDateChanged($event)">
-                Sledeći <i class="bi bi-chevron-right"></i>
-            </button>
-        </div>
-        <div>
-            <button class="btn btn-info" (click)="loadReservations()">Danas</button>
-        </div>
-    </div>
-    <div [ngSwitch]="view" class="calendar-display">
-        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
-            (eventClick)="handleEventWrapper($event)"
-            (dayClicked)="viewDateChanged($event.day.date)"
-            [weekStartsOn]="1" [locale]="'sr'">
-        </mwl-calendar-month-view>
-
-        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
-            (eventClick)="handleEventWrapper($event)"
-            [weekStartsOn]="1" [locale]="'sr'" [hourSegments]="2"
-            [dayStartHour]="8" [dayEndHour]="20">
-        </mwl-calendar-week-view>
-
-        <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
-            (eventClick)="handleEventWrapper($event)"
-            [locale]="'sr'" [hourSegments]="2" [dayStartHour]="8"
-            [dayEndHour]="20">
-        </mwl-calendar-day-view>
     </div>
 </div> -->

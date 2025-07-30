@@ -70,6 +70,10 @@ export class BarberService {
     return this.http.get<any>(`${this.scheduleUrl}/GetAllUsedAppointments?BarberId=${barberId}`)
   }
 
+  deleteAppointment(appointmentId: string): Observable<string> {
+    return this.http.delete(`${this.scheduleUrl}/delete-appointment?AppointmentId=${appointmentId}`, { responseType: 'text' as const });
+  }
+
   getBarberDetailsByBarberId(barberId: string): Observable<any> {
     return this.http.get<any>(`${this.barberUrl}/get-barber-details-by-barber-id?BarberId=${barberId}`);
   }

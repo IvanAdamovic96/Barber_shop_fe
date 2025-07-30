@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, WeekDay } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CalendarEvent, CalendarModule, CalendarView, DateAdapter } from 'angular-calendar';
+import { CalendarEvent, CalendarModule, CalendarMonthViewDay, CalendarView, CalendarWeekModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { showError } from '../../../../utils';
+import { showConfirm, showError, showSuccess } from '../../../../utils';
 import { BarberService } from '../../../services/barber.service';
 import { addMinutes } from 'date-fns';
 import { AuthService } from '../../../services/auth.service';
@@ -12,7 +12,7 @@ import { AuthService } from '../../../services/auth.service';
 interface Appointment {
   appointmentId: string;
   barberId: string;
-  time: string; // Ovo je vaš startTime
+  time: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -27,21 +27,31 @@ interface Appointment {
   templateUrl: './dashboard-barber-appointments.component.html',
   styleUrl: './dashboard-barber-appointments.component.css'
 })
-export class DashboardBarberAppointmentsComponent {
+export class DashboardBarberAppointmentsComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('dialog', { static: false }) dialog!: ElementRef;
+  
 
   view: CalendarView = CalendarView.Week;
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
   barberId: string = '';
   CalendarView: typeof CalendarView = CalendarView;
-  //event: Event | undefined;
+  selectedEvent: CalendarEvent | null = null;
+
+
 
   constructor(private barberService: BarberService, private authService: AuthService) { }
+
 
   ngOnInit(): void {
     this.barberId = this.authService.getBarberId();
 
     this.loadReservations();
+  }
+
+  ngAfterViewInit(): void {
+    //console.log('deleteModal nakon view init:', this.deleteModal);
   }
 
   loadReservations(): void {
@@ -53,11 +63,11 @@ export class DashboardBarberAppointmentsComponent {
 
     this.barberService.getAllUsedAppointmentsByBarberId(this.barberId).subscribe({
       next: (appointments: Appointment[]) => {
+        console.log(appointments)
         this.events = appointments.map(app => {
+
           const startTime = new Date(app.time);
-          // Izračunavamo endTime dodavanjem 30 minuta (ili drugog fiksnog trajanja)
-          // Preporučeno: Dobićete trajanje šišanja sa bekenda uz haircutName
-          const endTime = addMinutes(startTime, 30); // Pretpostavka: svaki termin traje 30 minuta
+          const endTime = addMinutes(startTime, 0);
 
           return {
             id: app.appointmentId,
@@ -67,14 +77,18 @@ export class DashboardBarberAppointmentsComponent {
             color: {
               primary: '#1e90ff',
               secondary: '#D1E8FF',
+              secondaryText: '#000000'
             },
             meta: {
               barberId: app.barberId,
               email: app.email,
               phoneNumber: app.phoneNumber,
               haircutName: app.haircutName,
-              applicationUserId: app.applicationUserId
-            }
+              applicationUserId: app.applicationUserId,
+              firstName: app.firstName,
+              lastName: app.lastName
+            },
+            draggable: false
           };
         });
       },
@@ -92,30 +106,88 @@ export class DashboardBarberAppointmentsComponent {
 
   viewDateChanged(date: Date) {
     this.viewDate = date;
-  
+    console.log('Promenjen datum pregleda:', this.viewDate);
   }
 
-  // Koristite ovu metodu za direktan pristup CalendarEvent-u
+  dayClickedInMonthView(event: { day: CalendarMonthViewDay<any>; sourceEvent: MouseEvent | KeyboardEvent }): void {
+    this.viewDate = event.day.date;
+    this.view = CalendarView.Day;
+  }
+
+
+  /* Popraviti ovo !!!! */
+  dayClickedInWeekView($event: { date: Date } | any) {
+    console.log('Kliknut dan u nedeljnom pregledu:', $event);
+    if ($event && $event.date) {
+      this.viewDate = new Date($event.date);
+    } else {
+      console.warn('Nije pronađen datum u $event:', $event);
+    }
+    this.view = CalendarView.Day;
+  }
+
+
   handleEvent(action: string, event: CalendarEvent): void {
-    console.log('Akcija:', action, 'Kliknuti termin:', event);
-    // Primer: Prikaz detalja termina u konzoli
-    console.log('Detalji klijenta:', event.meta.firstName, event.meta.lastName);
-    console.log('Usluga:', event.meta.haircutName);
-    console.log('Email:', event.meta.email);
-    console.log('Telefon:', event.meta.phoneNumber);
-    // Ovde možete implementirati otvaranje modala sa detaljima termina
+    if (action === 'Clicked') {
+      console.log('Kliknut event:', event)
+      this.selectedEvent = event;
+      setTimeout(() => {
+        this.openDeleteConfirmationModal();
+      }, 1000);
+    }
   }
 
-  // Metoda za omotavanje koja prima sirovi događaj (za dijagnostiku)
+  // Modal za brisanje termina
+  openDeleteConfirmationModal(): void {
+    setTimeout(() => {
+      if (this.dialog?.nativeElement) {
+        this.dialog.nativeElement.showModal()
+        /* const modal = new (window as any).bootstrap.Modal(this.dialog.nativeElement);
+        modal.showModal(); */
+      } else {
+        showError('Modal element nije pronađen.');
+        console.error('Modal element nije pronađen preko ViewChild.');
+      }
+    }, 0);
+  }
+
+
+  confirmDeleteAppointment(): void {
+    if (this.selectedEvent && this.selectedEvent.id) {
+      const appointmentId = this.selectedEvent.id as string;
+
+      this.barberService.deleteAppointment(appointmentId).subscribe({
+        next: (response) => {
+          showSuccess(response || 'Termin uspešno obrisan.');
+          this.closeDeleteConfirmationModal();
+          this.loadReservations();
+        },
+        error: (error) => {
+          console.error('Greška pri brisanju termina:', error);
+          showError('Došlo je do greške prilikom brisanja termina.');
+        }
+      });
+    }
+  }
+
+  closeDeleteConfirmationModal(): void {
+    const modalElement = document.getElementById('deleteAppointmentModal');
+    if (modalElement) {
+      const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+  }
+
+
+
   handleEventWrapper($event: any): void {
     console.log('Raw $event from eventClick:', $event);
-
-    // Na osnovu iskustva sa angular-calendar, $event bi trebalo da bude objekat sa .event property-jem
-    if ($event && $event.event) {
-      this.handleEvent('Clicked', $event.event as CalendarEvent); // Castovanje radi sigurnosti
+    if ($event || $event.event) {
+      this.handleEvent('Clicked', $event.event as CalendarEvent);
     } else {
       console.error('Neočekivani tip događaja iz eventClick. Očekivano je { event: CalendarEvent }. Primljeno:', $event);
-      // Opciono: Možete ovde baciti grešku ili se nositi sa neočekivanim događajem
     }
   }
 
@@ -125,5 +197,24 @@ export class DashboardBarberAppointmentsComponent {
       this.loadReservations();
     }
   }
+
+
+  deleteAppointment(eventId: string): void {
+    console.log(eventId)
+    /* showConfirm('Da li želite da obrišete ovaj termin? ', () => {
+
+      this.barberService.deleteAppointment(eventId).subscribe({
+        next: () => {
+          this.events = this.events.filter(e => e.id !== eventId);
+          console.log("Termin uspešno obrisan.");
+          this.loadReservations();
+        },
+        error: (err) => {
+          console.error("Greška prilikom brisanja termina", err);
+        }
+      });
+    }) */
+  }
+
 
 }
