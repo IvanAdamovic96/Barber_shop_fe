@@ -30,7 +30,7 @@ interface Appointment {
 export class DashboardBarberAppointmentsComponent implements OnInit, AfterViewInit {
 
   @ViewChild('dialog', { static: false }) dialog!: ElementRef;
-  
+
 
   view: CalendarView = CalendarView.Week;
   viewDate: Date = new Date();
@@ -66,7 +66,15 @@ export class DashboardBarberAppointmentsComponent implements OnInit, AfterViewIn
         console.log(appointments)
         this.events = appointments.map(app => {
 
-          const startTime = new Date(app.time);
+          //const startTime = new Date(app.time);
+
+          /*privremeno resenje za vremensku zonu*/
+          const [datePart, timePart] = app.time.split('T');
+          const [year, month, day] = datePart.split('-').map(Number);
+          const [hour, minute] = timePart.split(':').map(Number);
+          const startTime = new Date(year, month - 1, day, hour, minute);
+          /*---*/
+
           const endTime = addMinutes(startTime, 0);
 
           return {
@@ -200,12 +208,13 @@ export class DashboardBarberAppointmentsComponent implements OnInit, AfterViewIn
 
 
   deleteAppointment(eventId: string): void {
-    console.log(eventId)
-    /* showConfirm('Da li želite da obrišete ovaj termin? ', () => {
+    //console.log(eventId)
+    showConfirm('Da li želite da obrišete ovaj termin? ', () => {
 
       this.barberService.deleteAppointment(eventId).subscribe({
-        next: () => {
-          this.events = this.events.filter(e => e.id !== eventId);
+        next: (response) => {
+          //this.events = this.events.filter(e => e.id !== eventId);
+          showSuccess(response)
           console.log("Termin uspešno obrisan.");
           this.loadReservations();
         },
@@ -213,7 +222,7 @@ export class DashboardBarberAppointmentsComponent implements OnInit, AfterViewIn
           console.error("Greška prilikom brisanja termina", err);
         }
       });
-    }) */
+    })
   }
 
 

@@ -21,7 +21,7 @@ hr {
 
 .calendar-controls {
     padding: 15px 0;
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa; */
     border-radius: 10px;
     /* border-bottom: 1px solid #e9ecef; */
 }
