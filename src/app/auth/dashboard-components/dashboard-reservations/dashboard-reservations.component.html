@@ -1,0 +1,52 @@
+<div class="user-appointments-container py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 display-6 fw-bold">Moji Termini</h2>
+        <hr class="mb-5">
+
+        <div *ngIf="isLoading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Učitavanje...</span>
+            </div>
+            <p class="mt-2">Učitavanje termina...</p>
+        </div>
+
+        <div *ngIf="!isLoading && userAppointments.length === 0" class="alert alert-info text-center" role="alert">
+            Trenutno nemate zakazanih termina.
+            <br>
+            <a routerLink="/companies" class="alert-link mt-2 d-inline-block">Zakažite svoj prvi termin!</a>
+        </div>
+
+        <div *ngIf="!isLoading && userAppointments.length > 0" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div class="col" *ngFor="let appointment of userAppointments">
+                <div class="card h-100 shadow-sm user-appointment-card">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-primary">{{ appointment.haircutName }}</h5>
+                        <p class="card-text mb-2">
+                            <i class="fas fa-calendar-alt me-2 text-muted"></i>
+                            Datum i vreme: <strong class="text-dark">{{ appointment.time | date:'dd.MM.yyyy. HH:mm'
+                                }}</strong>
+                        </p>
+                        <p class="card-text mb-2">
+                            <i class="fas fa-user-tie me-2 text-muted"></i>
+                            Frizer: <strong class="text-dark">{{ appointment.barberName }}</strong>
+                        </p>
+                        <p class="card-text mb-2">
+                            <i class="fas fa-phone-alt me-2 text-muted"></i>
+                            Telefon frizera: <strong class="text-dark">{{ appointment.barberPhone }}</strong>
+                        </p>
+                        <p class="card-text mb-3">
+                            <i class="fas fa-envelope me-2 text-muted"></i>
+                            Email frizera: <strong class="text-dark">{{ appointment.barberEmail }}</strong>
+                        </p>
+                    </div>
+                    <div class="card-footer text-center bg-transparent border-top-0">
+                        <button class="btn btn-danger btn-sm w-100"
+                            (click)="cancelAppointment(appointment.appointmentId)">
+                            <i class="fas fa-times-circle me-1"></i> Otkaži termin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

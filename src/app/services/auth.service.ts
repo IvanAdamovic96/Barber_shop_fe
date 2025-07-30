@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, tap } from "rxjs";
+import { UserAppointment } from "../models/user-appointment.config";
 
 @Injectable({
     providedIn: 'root'
@@ -81,6 +82,10 @@ export class AuthService {
     /*  */
 
 
+    /* user api */
+    getAllAppointmentsByUserId(userId: string): Observable<UserAppointment[]>{
+        return this.http.get<UserAppointment[]>(`${this.authUrl}/get-appointments-by-user-id?UserId=${userId}`)
+    }
 
 
 
